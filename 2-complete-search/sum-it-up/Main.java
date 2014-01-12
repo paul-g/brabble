@@ -19,7 +19,7 @@ public class Main {
                 vals[i] = sc.nextInt();
 
             System.out.format("Sums of %d:\n", t);
-            solve2(t);
+            solve(t);
         }
 
         sc.close();
@@ -38,50 +38,55 @@ public class Main {
             if (seen[i] == 1) sum += vals[i];
         }
 
+        // Check whether we have a valid solution, if so print it
         if (sum == total) {
             found = true;
             boolean first = true;
             for (int i = 0; i < vals.length; i++) {
                 if (seen[i] == 1) {
-                    if (first)
-                        System.out.print(vals[i]);
-                    else
-                        System.out.print("+" + vals[i]);
+                    System.out.print(first ? vals[i] : "+" + vals[i]);
                     first = false;
                 }
             }
             System.out.println();
         }
 
+        // Stop when we used all numbers
         if (size == vals.length)
             return;
 
+        // Generate possible candidates for the next level
         for (int i = start; i < vals.length; i++) {
             seen[i] = 1;
             solveRec(total, size + 1, i + 1);
-            int prev = vals[i];
             seen[i] = 0;
+            // Need to skip values
+            int prev = vals[i];
             while (i + 1 < vals.length && vals[i + 1] == prev) i++;
         }
     }
 
-    public static void solve(int [] vals, int total) {
+    // Bit version is faster, but can't control generation order.
+    // So it's not useful for this problem, but it's a nice trick to know.
+    public static void solve(int total) {
         int subset = 0;
         boolean found = false;
 
         for (int i = 0; i <= 1 << vals.length; i++) {
             subset++;
             int sum = 0;
-            List<Integer> list = new ArrayList<Integer>();
             for (int j = 0; j < vals.length; j++) {
                 int mask = 1 << j;
-                if ((subset & mask) == mask) {
+                if ((subset & mask) == mask)
                     sum += vals[j];
-                    list.add(vals[j]);
-                }
             }
             if (sum == total) {
-                System.out.println(list);
+                for (int j = 0; j < vals.length; j++) {
+                    int mask = 1 << j;
+                    if ((subset & mask) == mask)
+                        System.out.print(vals[j] + "+");
+                }
+                System.out.println();
                 found = true;
             }
         }
