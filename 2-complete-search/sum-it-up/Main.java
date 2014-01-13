@@ -2,8 +2,12 @@ import java.util.*;
 
 public class Main {
 
-    static int seen[] = new int[13];
-    static int vals[] = new int[13];
+    static final int MAX_N = 13;
+
+    static int vals[] = new int[MAX_N];
+    // seen[i] = 1 iff we have included vals[i] in the current subset
+    static int seen[] = new int[MAX_N];
+    // whether we've found any valid solution
     static boolean found = false;
 
     public static void main (String [] args) {
@@ -19,17 +23,14 @@ public class Main {
                 vals[i] = sc.nextInt();
 
             System.out.format("Sums of %d:\n", t);
-            solve(t);
+            found = false;
+            solveRec(t, 0, 0);
+            //solveBit(t);
+            if (!found)
+                System.out.println("NONE");
         }
 
         sc.close();
-    }
-
-    public static void solve2(int total) {
-        found = false;
-        solveRec(total, 0, 0);
-        if (!found)
-            System.out.println("NONE");
     }
 
     public static void solveRec(int total, int size, int start) {
@@ -68,31 +69,24 @@ public class Main {
 
     // Bit version is faster, but can't control generation order.
     // So it's not useful for this problem, but it's a nice trick to know.
-    public static void solve(int total) {
-        int subset = 0;
-        boolean found = false;
-
+    public static void solveBit(int total) {
         for (int i = 0; i <= 1 << vals.length; i++) {
-            subset++;
             int sum = 0;
             for (int j = 0; j < vals.length; j++) {
                 int mask = 1 << j;
-                if ((subset & mask) == mask)
+                if ((i & mask) == mask)
                     sum += vals[j];
             }
             if (sum == total) {
                 for (int j = 0; j < vals.length; j++) {
                     int mask = 1 << j;
-                    if ((subset & mask) == mask)
+                    if ((i & mask) == mask)
                         System.out.print(vals[j] + "+");
                 }
                 System.out.println();
                 found = true;
             }
         }
-
-        if (!found)
-            System.out.println("NONE");
     }
 
 }
