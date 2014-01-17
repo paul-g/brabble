@@ -34,50 +34,53 @@ class Main {
 
         // The general case
         int sum = 0;
-
         StringBuilder sb = new StringBuilder();
         while (true) {
-            if (ll.size() >= 4) {
-                // general case
-                int smallest = ll.peekFirst();
-                int secondSmallest = ll.get(1);
-                int largest = ll.pollLast();
-                int secondLargest = ll.peekLast();
-                ll.add(largest);
+            int fst = ll.get(0);
+            int snd = ll.get(1);
 
-                int firstOption = 2 * smallest + largest + secondLargest;
-                int secondOption = smallest + 2 * secondSmallest + largest;
-
-                if (secondOption < firstOption) {
-                    sb.append(String.format("%d %d\n%d\n%d %d\n%d\n",
-                                            smallest, secondSmallest,
-                                            smallest,
-                                            secondLargest, largest,
-                                            secondSmallest)
-                              );
-                    sum += secondOption;
-                } else {
-                    sb.append(String.format("%d %d\n%d\n%d %d\n%d\n",
-                                            smallest, largest,
-                                            smallest,
-                                            smallest, secondLargest,
-                                            smallest)
-                              );
-                    sum += firstOption;
-                }
-                ll.pollLast();
-                ll.pollLast();
-            } else if (ll.size() == 3) {
-                sum += ll.get(0) + ll.get(1) + ll.get(2);
-                sb.append(ll.peekFirst() + " " + ll.pollLast() + "\n");
-                sb.append(ll.peekFirst() + "\n");
-                sb.append(ll.peekFirst() + " " + ll.peekLast() + "\n");
-                break;
-            } else if (ll.size() == 2) {
-                sb.append(ll.peekFirst() + " " + ll.peekLast() + "\n");
-                sum += ll.peekLast();
+            if (ll.size() == 2) {
+                sb.append(fst + " " + snd + "\n");
+                sum += snd;
                 break;
             }
+
+            int lst = ll.pollLast();
+
+            if (ll.size() == 2) {
+                sb.append(fst + " " + lst + "\n");
+                sb.append(fst + "\n");
+                sb.append(fst + " " + snd + "\n");
+                sum += fst + snd + lst;
+                break;
+            }
+
+            // general case, ll.size() >= 4
+            int secondLargest = ll.pollLast();
+
+            // (fst, lst), (fst), (fst, secondLargest), (fst)
+            int firstOption = 2 * fst + lst + secondLargest;
+            // (fst, snd), (fst), (secondLargset, largest), (snd)
+            int secondOption = fst + 2 * snd + lst;
+
+            if (secondOption < firstOption) {
+                sb.append(String.format("%d %d\n%d\n%d %d\n%d\n",
+                                        fst, snd,
+                                        fst,
+                                        secondLargest, lst,
+                                        snd)
+                          );
+                sum += secondOption;
+                continue;
+            }
+
+            sb.append(String.format("%d %d\n%d\n%d %d\n%d\n",
+                                    fst, lst,
+                                    fst,
+                                    fst, secondLargest,
+                                    fst)
+                      );
+            sum += firstOption;
         }
 
         System.out.println(sum);
