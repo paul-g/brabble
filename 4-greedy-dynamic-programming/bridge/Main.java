@@ -32,7 +32,6 @@ class Main {
             ll.add(vals[i]);
         }
 
-        // The general case
         int sum = 0;
         StringBuilder sb = new StringBuilder();
         while (true) {
