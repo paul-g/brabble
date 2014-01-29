@@ -17,6 +17,14 @@ public class Main {
         }
     }
 
+    public static void solve(int bound) {
+        for (int x = -bound; x <= bound; x++)
+            for (int y = x + 1; y <= bound; y++)
+                if (check(x, y, (a - x - y)))
+                    return;
+        System.out.println("No solution.");
+    }
+
     public static boolean check(int x, int y, int z) {
         if (x != z && y != z &&
             z * y * x == b &&
@@ -29,18 +37,4 @@ public class Main {
         }
         return false;
     }
-
-    public static void solve(int bound) {
-        for (int x = -bound; x <= bound; x++)
-            for (int y = x + 1; y <= bound; y++) {
-                if ( x * y > b)
-                    break;
-                int z = (a - x - y);
-                if (check(x, y, (a - x - y)))
-                    return;
-            }
-
-        System.out.println("No solution.");
-    }
-
 }
