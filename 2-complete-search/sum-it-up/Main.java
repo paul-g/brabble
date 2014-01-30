@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Main {
 
-    static final int MAX_N = 13;
+    static final int MAX_N = 20;
 
     static int vals[] = new int[MAX_N];
     // seen[i] = 1 iff we have included vals[i] in the current subset
@@ -24,8 +24,12 @@ public class Main {
 
             System.out.format("Sums of %d:\n", t);
             found = false;
-            solveRec(t, 0, 0);
-            //solveBit(t);
+
+            if (args.length > 0 && args[0].equals("bit")) {
+                solveBit(t);
+            } else
+                solveRec(t, 0, 0, 0);
+
             if (!found)
                 System.out.println("NONE");
         }
@@ -33,14 +37,14 @@ public class Main {
         sc.close();
     }
 
-    public static void solveRec(int total, int size, int start) {
-        int sum = 0;
-        for (int i = 0; i < vals.length; i++) {
-            if (seen[i] == 1) sum += vals[i];
-        }
+    public static void solveRec(int total, int size, int start, int sumSoFar) {
+
+        // stop when sum is larger than what we need
+        if (sumSoFar > total)
+            return;
 
         // Check whether we have a valid solution, if so print it
-        if (sum == total) {
+        if (sumSoFar == total) {
             found = true;
             boolean first = true;
             for (int i = 0; i < vals.length; i++) {
@@ -56,19 +60,22 @@ public class Main {
         if (size == vals.length)
             return;
 
+
         // Generate possible candidates for the next level
         for (int i = start; i < vals.length; i++) {
             seen[i] = 1;
-            solveRec(total, size + 1, i + 1);
+            solveRec(total, size + 1, i + 1, sumSoFar + vals[i]);
             seen[i] = 0;
-            // Need to skip values
+
+            // Skip identical values, to avoid generating the
+            // same solution multiple times
             int prev = vals[i];
             while (i + 1 < vals.length && vals[i + 1] == prev) i++;
         }
+
     }
 
-    // Bit version is faster, but can't control generation order.
-    // So it's not useful for this problem, but it's a nice trick to know.
+    // can't really control order of generation or apply pruning
     public static void solveBit(int total) {
         for (int i = 0; i <= 1 << vals.length; i++) {
             int sum = 0;
