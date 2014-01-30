@@ -41,7 +41,7 @@ Here is the material we aim to cover. Topics marked as done (Y) should
 have all the material available on github.
 
 | Week   | Topic                                  | Done |
-|--------+----------------------------------------+------|
+|--------|----------------------------------------|------|
 | Week 1 | Background and Implementation Problems | Y    |
 | Week 2 | Complete Search                        | N    |
 | Week 3 | Divide and Conquer                     | N    |
