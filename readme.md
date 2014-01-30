@@ -22,20 +22,25 @@ There is a lot of great material on competitive programming:
 
 # Material
 
-----------------------------------------------
-Week 1  | Background and Implentation Problems
-----------------------------------------------
-Week 2  | Complete Search
-----------------------------------------------
-Week 3  | Divide and Conquer
-----------------------------------------------
-Week 4  | Greedy, Dynamic Programming
-----------------------------------------------
-Week 5  | Graphs I
-----------------------------------------------
-Week 6  | Graphs II
-----------------------------------------------
-Week 7  | Maths
-----------------------------------------------
-Week 8  | Geometry
-----------------------------------------------
+We'll aim to cover the following Material. Topics marked as done
+should have all the material available on github
+
+| Week     | Topic                                 | Done |
+| -------- | ------------------------------------- | ---- |
+| Week 1   | Background and Implentation Problems  | Y    |
+| -------- | ------------------------------------- | ---- |
+| Week 2   | Complete Search                       | N    |
+| -------- | ------------------------------------- |      |
+| Week 3   | Divide and Conquer                    | N    |
+| -------- | ------------------------------------- |      |
+| Week 4   | Greedy, Dynamic Programming           | N    |
+| -------- | ------------------------------------- |      |
+| Week 5   | Graphs I                              | N    |
+| -------- | ------------------------------------- |      |
+| Week 6   | Graphs II                             | N    |
+| -------- | ------------------------------------- |      |
+| Week 7   | Maths                                 | N    |
+| -------- | ------------------------------------- |      |
+| Week 8   | Geometry                              | N    |
+| -------- | ------------------------------------  |      |
+
