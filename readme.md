@@ -26,6 +26,7 @@ We'll aim to cover the following Material. Topics marked as done
 should have all the material available on github
 
 | Week     | Topic                                 | Done |
+|----------|---------------------------------------|------|
 | Week 1   | Background and Implentation Problems  | Y    |
 | Week 2   | Complete Search                       | N    |
 | Week 3   | Divide and Conquer                    | N    |
