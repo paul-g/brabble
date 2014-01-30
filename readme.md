@@ -40,13 +40,13 @@ A few books you might will definitely find useful:
 Here is the material we aim to cover. Topics marked as done (Y) should
 have all the material available on github.
 
-| Week   | Topic                                  | Done |
-|--------|----------------------------------------|------|
-| Week 1 | Background and Implementation Problems | Y    |
-| Week 2 | Complete Search                        | N    |
-| Week 3 | Divide and Conquer                     | N    |
-| Week 4 | Greedy, Dynamic Programming            | N    |
-| Week 5 | Graphs I                               | N    |
-| Week 6 | Graphs II                              | N    |
-| Week 7 | Maths                                  | N    |
-| Week 8 | Geometry                               | N    |
+| Week | Topic                                  | Done |
+|------|----------------------------------------|------|
+|    1 | Background and Implementation Problems | Y    |
+|    2 | Complete Search                        | N    |
+|    3 | Divide and Conquer                     | N    |
+|    4 | Greedy, Dynamic Programming            | N    |
+|    5 | Graphs I                               | N    |
+|    6 | Graphs II                              | N    |
+|    7 | Maths                                  | N    |
+|    8 | Geometry                               | N    |
