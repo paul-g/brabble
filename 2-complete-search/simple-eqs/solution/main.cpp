@@ -1,3 +1,8 @@
+/** This is solution is just for reference. Notice how much faster it
+    is than the Java version (0.004s vs 0.131s). This is due to JVM
+    startup time:
+    http://en.wikipedia.org/wiki/Java_performance#Startup_time */
+
 #include <iostream>
 
 using namespace std;
@@ -18,10 +23,7 @@ int main() {
         if ( y != z && z != x &&
              x * y * z == b &&
              x * x + y * y + z * z == c) {
-          int small = min(x, min(y, z));
-          int large = max(x, max(y, z));
-          int mid = a - small - large;
-          cout << small << " " << mid << " " << large << endl;
+          cout << x << " " << y << " " << z << endl;
           found = true;
         }
       }
