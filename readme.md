@@ -26,7 +26,7 @@ There is a lot of great material on competitive programming:
 
 ## Useful Books
 
-A few books you might will definitely find useful:
+A few books you will definitely find useful:
 
 1. _Introduction to Algorithms_, Charles E. Leiserson, Ronald Rivest,
    Thomas H. Cormen, and Clifford Stein
