@@ -21,7 +21,7 @@ There is a lot of great material on competitive programming:
    [TopCoder](http://topcoder.com) provide a host of real-time online
    programming contests (often thousands of contestants) so are a
    great way to gain some contest experiences
-4. You will also find useful to read about
+4. You will also find it useful to read about
    [Java Collections API](http://docs.oracle.com/javase/7/docs/api/java/util/Collections.html)
 
 ## Useful Books
