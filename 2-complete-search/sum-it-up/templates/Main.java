@@ -1,9 +1,11 @@
 import java.util.*;
 
+import static java.lang.System.out;
+
 public class Main {
 
-    static final int MAX_N = 20;
-    static int vals[] = new int[MAX_N];
+    static int values[], sol[];
+    static int pos;
     static boolean found;
 
     public static void main (String [] args) {
@@ -14,22 +16,27 @@ public class Main {
             if (t == 0 && n == 0)
                 break;
 
-            for (int i = 0; i < n; i++)
-                vals[i] = sc.nextInt();
+            values = new int[n];
+            sol = new int[n];
+	    pos = 0;
 
-            System.out.format("Sums of %d:\n", t);
+            for (int i = 0; i < n; i++)
+                values[i] = sc.nextInt();
+
+            out.format("Sums of %d:\n", t);
             found = false;
 
-	    solveRec(t, 0, 0, 0);
-	    
+            solveRec(0, 0, t);
+
             if (!found)
-                System.out.println("NONE");
+                out.println("NONE");
         }
 
         sc.close();
     }
 
-    public static void solveRec(int total, int size, int start, int sumSoFar) {
+    public static void solveRec(int size, int start, int sum) {
     }
 
 }
+
