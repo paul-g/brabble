@@ -21,12 +21,12 @@ There is a lot of great material on competitive programming:
    [TopCoder](http://topcoder.com) provide a host of real-time online
    programming contests (often thousands of contestants) so are a
    great way to gain some contest experiences
-4. You will also find useful to read about
+4. You will also find it useful to read about
    [Java Collections API](http://docs.oracle.com/javase/7/docs/api/java/util/Collections.html)
 
 ## Useful Books
 
-A few books you might will definitely find useful:
+A few books you will definitely find useful:
 
 1. _Introduction to Algorithms_, Charles E. Leiserson, Ronald Rivest,
    Thomas H. Cormen, and Clifford Stein
@@ -43,7 +43,7 @@ have all the material available on github.
 | Week | Topic                                  | Done |
 |------|----------------------------------------|------|
 |    1 | Background and Implementation Problems | Y    |
-|    2 | Complete Search                        | N    |
+|    2 | Complete Search                        | Y    |
 |    3 | Divide and Conquer                     | N    |
 |    4 | Greedy, Dynamic Programming            | N    |
 |    5 | Graphs I                               | N    |
