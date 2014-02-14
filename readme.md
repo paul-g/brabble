@@ -44,7 +44,7 @@ have all the material available on github.
 |------|----------------------------------------|------|
 |    1 | Background and Implementation Problems | Y    |
 |    2 | Complete Search                        | Y    |
-|    3 | Divide and Conquer                     | N    |
+|    3 | Divide and Conquer                     | Y    |
 |    4 | Greedy, Dynamic Programming            | N    |
 |    5 | Graphs I                               | N    |
 |    6 | Graphs II                              | N    |
