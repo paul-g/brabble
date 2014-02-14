@@ -50,3 +50,21 @@ have all the material available on github.
 |    6 | Graphs II                              | N    |
 |    7 | Maths                                  | N    |
 |    8 | Geometry                               | N    |
+
+### Structure
+
+There is a directory for each week, under it directly the slides
+and one directory per problem discussed that week. For each problem
+there is a template you can use to start writing own solution.
+
+Use the provided solution if you get stuck, but try spending at least
+10 - 15 mins before resorting to such drastic measures... :)
+
+
+``````
+week1/
+  problem1/
+    solution/
+    template/
+  slides.pdf
+````
