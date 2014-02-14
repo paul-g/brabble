@@ -21,7 +21,7 @@ class Main {
 	    memo = new double[n][maxWeight + 1];
 
 	    for (int i = 0; i < n; i++)
-		for (int j = 0; j < n; j++)
+		for (int j = 0; j < maxWeight + 1; j++)
 		    memo[i][j] = -1;
 	    
             for (int i = 0; i < n; i++){
@@ -32,6 +32,7 @@ class Main {
 	    // solve and print
 	    System.out.println(profit(n - 1, maxWeight));
 	    System.out.println(profitMemo(n - 1, maxWeight));
+	    System.out.println(bottomUp(n, maxWeight));
         }
     }
 
@@ -65,6 +66,23 @@ class Main {
 	    return max(memo(i - 1, weight),
 		       memo(i - 1, weight - w[i]) + p[i]);
 	return memo(i - 1, weight);
+    }
+
+    // the bottom up approach builds the smaller solutions first it
+    // also avoids any need for recursion also since all required
+    // subproblems for a step are from step-1, we only need to use a
+    // single vector to store them
+    public static double bottomUp(int n, int weight) {
+
+	int [] best = new int[weight + 1];
+	
+	for (int i = 0; i < n; i++) {
+	    for (int j = weight; j >= 1; j--) {
+		best[j] = max(best[j], j - w[i] < 0 ? 0 : best[j - w[i]] + p[i]);
+	    }
+	}
+
+	return best[weight];
     }
 
 }
