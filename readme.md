@@ -45,8 +45,26 @@ have all the material available on github.
 |    1 | Background and Implementation Problems | Y    |
 |    2 | Complete Search                        | Y    |
 |    3 | Divide and Conquer                     | Y    |
-|    4 | Greedy, Dynamic Programming            | N    |
+|    4 | Greedy, Dynamic Programming            | Y    |
 |    5 | Graphs I                               | N    |
 |    6 | Graphs II                              | N    |
 |    7 | Maths                                  | N    |
 |    8 | Geometry                               | N    |
+
+### Structure
+
+There is a directory for each week, under it directly the slides
+and one directory per problem discussed that week. For each problem
+there is a template you can use to start writing your own solution.
+
+Use the provided solution if you get stuck, but try spending at least
+10 - 15 mins before resorting to such drastic measures... :)
+
+
+``````
+week1/
+  problem1/
+    solution/
+    template/
+  slides.pdf
+````
