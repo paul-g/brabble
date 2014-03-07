@@ -1,6 +1,7 @@
 import java.util.*;
 
-
+/** Pair is need to store vertex and distance from source in a
+    priority queue. **/
 class Pair implements Comparable<Pair> {
 
     int vertex;
@@ -26,10 +27,13 @@ class Dijkstra {
 
 	PriorityQueue<Pair> pq = new PriorityQueue<Pair>();
 
-	int source = 1;
+	int source = 0;
 
 	int n = graph.size();
+	// holds distance from source to all other nodes
 	double d[] = new double[n];
+
+	// keep track of nodes we've visited
 	boolean seen[] = new boolean[n];
 	for (int i = 0; i < n; i++) {
 	    d[i] = Integer.MAX_VALUE;
