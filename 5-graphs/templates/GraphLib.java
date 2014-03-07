@@ -88,6 +88,43 @@ public class GraphLib {
     }
 
     /** Read a graph from a dot file and return its adjacency list. **/
+    public static List<List<Edge>> readDirectedGraphFromDotFile(String filename) throws Exception {
+        Scanner sc = new Scanner(new File(filename));
+
+	String line = sc.nextLine();
+
+        ArrayList<List<Edge>> graph = new ArrayList<>();
+
+	int max = 0;
+
+        while (sc.hasNextLine()) {
+	    sc.findInLine("(\\d*) -> (\\d*) \\[label=(\\d*\\.\\d*)\\]");
+
+	    MatchResult result = sc.match();
+	    sc.nextLine();
+
+	    int from = Integer.parseInt(result.group(1));
+	    int to = Integer.parseInt(result.group(2));
+	    double weight = Double.parseDouble(result.group(3));
+
+	    max = Math.max(max, from);
+	    max = Math.max(max, to);
+
+            ensureSize(graph, from);
+            List<Edge> neighbours = graph.get(from);
+            if (neighbours == null)
+                neighbours = new ArrayList<Edge>();
+            neighbours.add(new Edge(from, to, weight));
+        }
+
+	ensureSize(graph, max);
+
+        sc.close();
+        return graph;
+    }
+
+
+    /** Read a graph from a dot file and return its adjacency list. **/
     public static List<List<Edge>> readUndirectedGraphFromDotFile(String filename) throws Exception {
         Scanner sc = new Scanner(new File(filename));
 
