@@ -32,6 +32,8 @@ class Main {
         int n = sc.nextInt();
 	double area = 0;
 
+	// TODO implement polygon area using double precision
+
 	sc.close();
         return area;
     }
@@ -41,6 +43,8 @@ class Main {
         Scanner sc = new Scanner(new File("test.in"));
         int n = sc.nextInt();
 	BigDecimal area = new BigDecimal("0");
+
+	// TODO implement polygon area using big decimal
 
         sc.close();
         return area.doubleValue();
