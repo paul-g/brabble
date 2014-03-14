@@ -46,10 +46,10 @@ have all the material available on github.
 |    2 | Complete Search                        | Y    |
 |    3 | Divide and Conquer                     | Y    |
 |    4 | Greedy, Dynamic Programming            | Y    |
-|    5 | Graphs I                               | N    |
-|    6 | Graphs II                              | N    |
-|    7 | Maths                                  | N    |
-|    8 | Geometry                               | N    |
+| 5, 6 | Graphs                                 | Y    |
+|    7 | Geometry                               | Y    |
+|    8 | Maths                                  | N    |
+
 
 ### Structure
 
