@@ -52,17 +52,15 @@ class Gauss {
                 swapRows(mat, i, k);
 
             // divide row by pivot
-            double p = mat[i][j];
-            for (int kk = 0; kk < m + 1; kk++)
-                mat[i][kk] /= p;
+            for (int kk = j + 1; kk < m + 1; kk++)
+                mat[i][kk] /= mat[i][j];
             mat[i][j] = 1;
 
             // update all rows below the pivot row
             for (int kk = i + 1; kk < n; kk++) {
-                // subtract the pivot row
-                double z = mat[kk][j];
-                for (int l = 0; l < m + 1; l++)
-                    mat[kk][l] -= z * mat[i][l];
+                for (int l = j + 1; l < m + 1; l++)
+                    mat[kk][l] -= mat[kk][j] * mat[i][l];
+                mat[kk][j] = 0;
             }
 
             ++i;
