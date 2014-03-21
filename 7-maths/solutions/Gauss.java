@@ -48,7 +48,8 @@ class Gauss {
             }
 
             // swap this row with the current i
-            swapRows(mat, i, k);
+            if (i != k)
+                swapRows(mat, i, k);
 
             // divide row by pivot
             double p = mat[i][j];
