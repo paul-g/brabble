@@ -22,7 +22,6 @@ class Gauss {
 
         Scanner sc = new Scanner(new File("gauss.in"));
 
-
         int n = sc.nextInt();
         int m = sc.nextInt();
 
@@ -32,8 +31,10 @@ class Gauss {
                 mat[i][j] = sc.nextDouble();
         }
 
+        // j represents the column (i.e. the variable),
+        // i the row (i.e. the equation)
         int i = 0, j = 0;
-        // j represents the column, i the row
+
         while (i < n && j < m) {
 
             // find a non-zero in the current column
@@ -47,7 +48,7 @@ class Gauss {
                 continue;
             }
 
-            // swap this row with the current i
+            // swap this row with the current row i
             if (i != k)
                 swapRows(mat, i, k);
 
