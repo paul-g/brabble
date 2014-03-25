@@ -1,9 +1,9 @@
 About brabble
 =============
 
-Here you will find a set of lecture notes and materials for a crash
-course in competitive programming held at Imperial College London as
-part of the Advanced Programming Lectures for first year students.
+__brabble__ is a crash course in competitive programming held at
+Imperial College London as part of the 1st year Advanced Programming
+Lectures.
 
 We go over basic approaches to solve problems which are selected from
 an online judge. We use Java and Python.
@@ -35,36 +35,25 @@ A few books you will definitely find useful:
 
 3. _The Algorithm Design Manual_, Steven Skiena
 
-## Material
 
-Here is the material we aim to cover. Topics marked as done (Y) should
-have all the material available on github.
+## Topics Covered
 
-| Week | Topic                                  | Done |
-|------|----------------------------------------|------|
-|    1 | Background and Implementation Problems | Y    |
-|    2 | Complete Search                        | Y    |
-|    3 | Divide and Conquer                     | Y    |
-|    4 | Greedy, Dynamic Programming            | Y    |
-| 5, 6 | Graphs                                 | Y    |
-|    7 | Geometry                               | Y    |
-|    8 | Maths                                  | N    |
+| Week | Topic                                  |
+|------|----------------------------------------|
+|    1 | Background and Implementation Problems |
+|    2 | Complete Search                        |
+|    3 | Divide and Conquer                     |
+|    4 | Greedy, Dynamic Programming            |
+| 5, 6 | Graphs                                 |
+|    7 | Geometry                               |
+|    8 | Maths                                  |
 
 
-### Structure
+There is a directory for each week in which you will find:
 
-There is a directory for each week, under it directly the slides
-and one directory per problem discussed that week. For each problem
-there is a template you can use to start writing your own solution.
+1. slides for the lecture
+2. templates for the problems to get you started quickly
+3. solutions (usually tested on an online judge)
 
 Use the provided solution if you get stuck, but try spending at least
-10 - 15 mins before resorting to such drastic measures... :)
-
-
-``````
-week1/
-  problem1/
-    solution/
-    template/
-  slides.pdf
-````
+15 mins before resorting to such drastic measures... :)
