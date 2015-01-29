@@ -103,6 +103,23 @@ Source: http://docs.oracle.com/javase/7/docs/api/java/lang/System.html#currentTi
 
 ## Visualisation
 
+### gnuplot
+* use to plot data,  functions etc.
+
+```
+$ gnuplot
+$ gnuplot>  plot sin(x)/x
+$ gnuplot>  splot sin(x*y/20)
+$ gnuplot>  plot sin(x) title 'Sine', tan(x) title 'Tangent'
+```
+
+* gnuplot _scripts_ -- great for automation
+
+### gnuplot script
+
+
+
+
 ## Running Example - Matrix Multiply
 
 ## Benchmarking
