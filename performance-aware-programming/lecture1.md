@@ -31,11 +31,27 @@ difficult e.g. when computing with floating point)
 # 1. Measuring
 
 ## Methodology
-* To _maximise_ performance we need to:
+* The canonical definition of performance is (cit. req.)
+$$ P = \frac{1}{Wall Clock Time} $$
+
+* There are other measures
+    * _MIPS_ \ \ \   -- Millions of instructions / sec
+    * _GFLOPS_ -- Billions of floating point operations / sec
+    * _GB/s_ \ \ \   -- DRAM/Disk/Cache/Network bandwidth
+    * _CPI_  \ \ \ \ \   -- Cycles per instruction
+    * Useful for understanding the bottlenecks of a system
+
+* But these do not tell the _whole story_ as well as $P$ does
+      * _As a user I (generally) want my program to run __faster___
+      * I don't care about the factors involved
+
+## Measuring
+
+* To say whether an application has better performance, we need to
     * _estimate_ performance
     * _measure_ performance
 
-## Estimating Performance
+### Estimating Performance
 * Algorithmic complexity -- a high level model for _estimating_ the
   relative performance of algorithms
 * Assumes all operations cost the same
@@ -45,8 +61,6 @@ difficult e.g. when computing with floating point)
 ## Measuring Performance
 
 ### Various Performance Measures
-* The canonical definition of performance is (cit. req.)is
-$$ P = 1 / T_w $$
 * This means (in general) we measure wall clock _execution time_
 * How you measure performance depends on the application
 * Other measures: _MIPS_, _CPI_, _GFLOPS_ etc.
