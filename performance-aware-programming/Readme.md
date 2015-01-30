@@ -1,18 +1,6 @@
 This is a set of four introductory lectures on Performance Aware
 Programming. 
 
-### Requires
-
-1. gnuplot and gnuplot-x11
-2. Oracle Java JDK 1.8
-
-You can install gnuplot using
-
-```
-sudo apt-get install gnuplot-x11
-```
-
-Instructions on installing Java 1.8 can be found [here](http://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html).
 
 #### Lecture 1 - Measuring 
  Defines performance and looks at how we can measure it in our programs using various Linux builtins and Java method calls. The [accompanying example](src/lecture1) shows the impact of the loop interchange optimisation on the performance of matrix multiplication. A script is provided to run the experiment for varying input sizes and plot the results.
@@ -38,3 +26,17 @@ Compiling and running the examples in `src/` requires Oracle Java JDK >= 1.8. Ex
 cd src/lecture1
 javac Measuring.java && java Measuring
 ```
+
+
+### Requires
+
+1. gnuplot and gnuplot-x11
+2. Oracle Java JDK 1.8
+
+You can install gnuplot using
+
+```
+sudo apt-get install gnuplot-x11
+```
+
+Instructions on installing Java 1.8 can be found [here](http://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html).
