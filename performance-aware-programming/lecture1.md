@@ -1,14 +1,24 @@
 % Performance Aware Programming
 
+# Aware != Expert
+
+# What is Performance?
+
 ## What is Performance?
 
-* The canonical definition of performance is (cit. req.)
+* The canonical definition of performance\footnote{Patterson \&
+Henessey, Computer Organization and Design}
 $$ P = \frac{1}{Wall Clock Time} $$
 
-* Wall Clock Time refers to the execution time of a program as measured
-  by a clock on the _wall_\footnote{there are other clocks in a
-  computer system, so it's important to distinguish}
-* There are other measures
+* Wall Clock Time is the total elapsed time when performing a task
+* It includes the processing time as well as time spent waiting for
+  I/O, operating system overhead etc.
+* There are other times we may be interested to measure
+  (e.g. user/kernel CPU time), so it's important to distinguish
+
+## What is Performance?
+
+* System/application designers may also be interested in other measures
     * _MIPS_ \ \ \   -- Millions of instructions / sec
     * _GFLOPS_ -- Billions of floating point operations / sec
     * _GB/s_ \ \ \   -- DRAM/Disk/Cache/Network bandwidth
@@ -17,7 +27,7 @@ $$ P = \frac{1}{Wall Clock Time} $$
 
 * But these do not tell the _whole story_ as well as $P$ does
       * _As a user I (generally) want my program to run __faster___
-      * I don't care about the factors involved
+      * I don't necessarily care about the factors involved
 
 ## Is Performance the Most Important Property?
 
@@ -33,28 +43,30 @@ $$ P = \frac{1}{Wall Clock Time} $$
 * When improving the performance of a program (_optimising_) __always
 check the results are correct__
 
+# Why  Care About Performance?
+
 ## Motivation
 
-* Better _performance_ often translates to:
-    * (A lot) Happier customers
-    * Substantial savings
+* Better _performance_ often results in:
+    * Improved customer experience
+    * Substantial savings in operating costs
+    * Facilitating otherwise impossible tasks
 * Sample effects of low performance:
-    * Lag on Android: Laggy UI => Sad customers :(
-    * Data Centers: more servers => increased power/hardware costs
-    * Battery life on Mobile devices => more processing time =>
-      shorter battery life
-    * __Weather prediction__ less simulation accuracy => less accurate
+    * __Operating System__ Laggy UI => Sad customers :(
+    * __Data Centers__ more servers => increased costs
+    * __Battery life__ more processing time => shorter battery life
+    * __Weather prediction__ smaller simulation accuracy => less accurate
       results
 
 ## Challenges
 
-* Maximising performance requires a good understanding of the entire
+1. Maximising performance requires a good understanding of the entire
   software and hardware stack
 
-* Understanding is complicated by the complex interactions between the
-  different abstraction layers: system, algorithm, OS, hardware
+2. Complex interaction between the different layers (system, algorithm,
+  OS, hardware) may lead to surprising, hard to explain results
 
-* Optimisation must not affect correctness of results (sometimes
+3. Optimisation must not affect correctness of results (sometimes
 difficult e.g. when computing with floating point)
 
 <!-- ## Approach -->
@@ -70,11 +82,13 @@ difficult e.g. when computing with floating point)
 
 ## Outline
 
-1. __Measuring__ -- measuring an application performance
+Outline for this and next three lectures:
+
+1. __Measuring__ -- measuring application performance in Linux/Java
 2. __Algorithms__ -- the impact of smart programs, efficiently
    implemented
-3. __Hardware__ -- understanding the impact of the underlying
-   hardware on the performance of our programs
+3. __Hardware__ -- the impact of the underlying hardware on the
+   performance of our programs
 4. __Tools__ -- how to get the most of our tools when programming
 
 # 1. Measuring
@@ -90,14 +104,13 @@ difficult e.g. when computing with floating point)
 * We use _computational complexity_ to estimate the performance of an
   algorithm
 * We use various system and programming language utilities to
-  _measure_ the performance of an implementationg
+  _measure_ the performance of an implementation
 
 ## Estimating Performance - Computational Complexity
 
-* mathematical model for _estimating_ the relative performance of
+* Model for _estimating_ the relative performance of
   algorithms
-* Ignores implementation aspects (e.g. assumes all operations cost the same)
-
+* Ignores implementation aspects (e.g. all operations identical)
 ```Java
 for (int i = 0; i < n; i++)
   for (int j = 0; j < n; j++)
@@ -105,41 +118,48 @@ for (int i = 0; i < n; i++)
        sum += i * j * k;
 ```
 
-* This algorithm performs $3n^3$ arithmetic operations
-* We may refer to it as having _complexity O(n^3)_
-    * it performs no worse than $c n^3$ for some c and large ns
-    * in practice, the value of _c_ is often important
+. . .
 
+* This algorithm performs $3n^3$ arithmetic operations
+* We may refer to it as having complexity $O(n^3)$
+    * it performs no worse than $c n^3$ for some c and large ns
+    * the constant factor c is ignored in big Oh notation
+    * in practice, the value of _c_ is often quite important
+
+. . .
+
+* So how do we _measure_ the performance of a program?
 
 ## Measuring Performance
 
 * We will use $P = \frac{1}{Wall Clock Time}$
 * This means (in general) we measure wall clock _execution time_
 * Assume we normally run our program with
-     * `$ java Measuring 512 -m`
+     * `$ java Measuring 512`
+
+. . .
 
 ### Measuring Execution Time in Linux
 
 * Can measure runtime from the command line
 ```
-$ time java Measuring 512 -m
+$ time java Measuring 512
 real	0m18.522s user	0m18.561s sys	0m0.060s
 ```
-* And also
+* But this one is probably better
 ```
-$ /usr/bin/time -v java Measuring 512 -m
+$ /usr/bin/time -v java Measuring 512
 ```
 
 ## Measuring performance
 
 ```
-$ time java Measuring 512 -m
+$ time java Measuring 512
 real	0m18.522s user	0m18.561s sys	0m0.060s
 ```
 * `real` -- the _wall clock time_
 * `user` -- time spent running user code
 * `sys` -- time spent running operating system kernel code
-
 
 ### Important!
 * `user` and `sys` are _CPU times_ -- they only include
@@ -147,6 +167,11 @@ real	0m18.522s user	0m18.561s sys	0m0.060s
 * the time spent (e.g. on I/O operations), is not included in `user`
   and `sys`, but _it is included_ in `real`
 * most of the time we are interested in the `real` time
+
+. . .
+
+* CPU time is reported across cores, which is why `user` + `sys` may
+  be greater than `real`
 
 ## Java Profiler
 
@@ -186,14 +211,15 @@ long startTime  = System.nanoTime();
 
 ## Running Example - Matrix Multiply
 
-* Let's implement a simple matrix-matrix multiplication:
-    *
+* Let's implement a simple matrix multiply optimisation
+    * $A B = C$, where A, B, C -- square matrices (same rank)
+    * $C_{i, j} = \sum\limits_{k=1}^nA_{i,k}B_{k,j}$
 
-* Then we will:
-     1. save the running times
-     2. Do some post-processing
-     3. Plot a graph of the results
-     4. Compare double precision floating point vs long
+* Steps
+     1. Measure and save the running times for various sizes
+     2. Do some post-processing and plot the results (size vs time)
+     3. Optimise the matrix multiplication
+     4. Plot and compare optimised vs un-optimised
 
 ## Automating with Shell Scripts
 * We don't want to repeat any pre/post processing steps
@@ -206,7 +232,7 @@ function run_benchmark() {
     javac Measuring.java
     for i in {64..1024..32}
     do
-        java Measuring $i -m | tee -a out
+        java Measuring $i | tee -a out
     done
 }
 ```
@@ -228,29 +254,18 @@ pause <time>
 reread
 ```
 
-## Estimating vs Measuring
+## Estimating vs Measuring - Matrix Multiply
 
-* What do you observe by plotting the execution time for matrix
-  multiply using double precision vs long
+* Now apply a simple loop interchange optimisation
+    * swap the innermost loop (k) with its immediate neighbour (j)
+* What impact do you expect this optimisation to have on
+    * _correctness_?
+    * _algorithmic complexity_?
+    * _measured performance_?
+* Why?
 
-* Why do you think this is the case?
+. . .
 
-## Estimating vs Measuring
-
-* Now apply a simple loop interchange optimisation:
-* replace the innermost loop (k) with its immediate neighbour (j)
-* What impact does this have on _algorithmic complexity_?
-* What impact does this have on the _measured performance_?
-* Why do you think this is the case
-
-## Estimating vs Measuring - Filter Example
-
-* Now consider a simple filter sum algorithm which computes the sum of
-  all array elements greater than `limit`
-* Implement this function and time it for some random data and various array sizes
-* Now sort the array before running the filter sum function
-* What impact does this have on _algorithmic complexity_?
-* What impact does this have on the _measured performance_?
-* Why do you think this is the case
+* Answers and more examples in Lecture 3
 
 # Questions ?

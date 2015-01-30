@@ -1,12 +1,8 @@
 set term x11
 set out
 
-set y2tics
-set tics out
-
-plot "out" using 1:2 title 'Fast' with linespoint axes x1y1, \
-     "out" using 1:3 title 'Slow' with linespoint axes x1y1
+plot "out" using 1:3 title 'Fast' with linespoint, \
+     "out" using 1:5 title 'Slow' with linespoint
 
 pause 1
 reread
-
