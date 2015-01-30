@@ -6,6 +6,7 @@ function run_benchmark() {
 
     for i in {64..1024..32}
     do
+        # run the program and write its output both to the file "out" and stdout
         java Measuring $i | tee -a out
     done
 }
