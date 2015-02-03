@@ -1,4 +1,5 @@
 % Performance Aware Programming
+% Paul Grigoras
 
 # Aware != Expert
 
