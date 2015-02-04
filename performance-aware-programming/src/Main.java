@@ -2,89 +2,97 @@ import java.util.*;
 
 import static java.lang.Math.*;
 
+abstract class KnapsackSolver {
 
-class KnapsackSolver {
+    protected int w[], p[];
+    protected double memo[][];
+    protected int cacheHits, unique, calls;
 
-    private int w[], p[];
-    private double memo[][];
-
-    private int cacheHits, unique, calls;
-
-    class KnapsackSolver(int w[], int p[]) {
+    KnapsackSolver(int[] w, int[] p) {
         this.w = w;
         this.p = p;
     }
 
-    private double solve2() {
-    }
+    abstract double solve2(int i, int weight);
 
-    double solve() {
+    double solve(int maxWeight) {
         this.calls = 0;
         this.cacheHits = 0;
-        this.unique = 0
+        this.unique = 0;
         long start = System.currentTimeMillis();
-        solve2();
+        double res = solve2(w.length - 1, maxWeight);
         long tookMs = System.currentTimeMillis() - start;
         System.out.println(tookMs);
-        System.out.println(calls);
-        System.out.println(cacheHits);
-        System.out.println(unique);
+        // System.out.println(calls);
+        // System.out.println(cacheHits);
+        // System.out.println(unique);
+        return res;
     }
 }
 
 class CompleteSearchSolver extends KnapsackSolver {
+    CompleteSearchSolver(int[] w, int[] p) {
+        super(w, p);
+    }
+
     @Override
-    double solve(int i, weight) {
+    double solve2(int i, int weight) {
         // performance
-        System.out.println(i + " " + weight);
+        // System.out.println(i + " " + weight);
         this.calls++;
 
         if (i == 0)
             return 0;
         if (w[i] <= weight)
-            return max(profit(i - 1, weight),
-                       profit(i - 1, weight - w[i]) + p[i]);
-        return profit(i - 1, weight);
+            return max(solve2(i - 1, weight),
+                       solve2(i - 1, weight - w[i]) + p[i]);
+        return solve2(i - 1, weight);
     }
 }
 
 class CompleteSearchPrunedSolver extends KnapsackSolver {
+
+    CompleteSearchPrunedSolver(int[] w, int[] p) {
+        super(w, p);
+    }
+
     @Override
-    double solve(int i, weight) {
+    double solve2(int i, int weight) {
         // performance
-        System.out.println(i + " " + weight);
+        //        System.out.println(i + " " + weight);
         this.calls++;
 
         if (i == 0 || weight == 0)
             return 0;
         if (w[i] <= weight)
-            return max(profit(i - 1, weight),
-                       profit(i - 1, weight - w[i]) + p[i]);
-        return profit(i - 1, weight);
+            return max(solve2(i - 1, weight),
+                       solve2(i - 1, weight - w[i]) + p[i]);
+        return solve2(i - 1, weight);
     }
 }
 
 class MemoSolver extends KnapsackSolver {
-    
+
     private double memo[][];
 
-    public MemoSolver(int w[], int p[]) {
+    public MemoSolver(int w[], int p[], int maxWeight) {
         super(w, p);
-        for (int i = 0; i < n; i++)
+        memo = new double[w.length + 1][maxWeight + 1];
+        for (int i = 0; i < w.length; i++)
             for (int j = 0; j < maxWeight + 1; j++)
                 memo[i][j] = -1;
     }
 
-    public static double memo(int i, int weight) {
+    public double memo(int i, int weight) {
         if (memo[i][weight] == -1)
-            memo[i][weight] = profitMemo(i, weight);
+            memo[i][weight] = solve2(i, weight);
         return memo[i][weight];
     }
 
     // the recurrence is the same, but we cache the results in memo to
     // avoid unnecessary computation
     @Override
-    double solve (int i, int weight) {
+    double solve2 (int i, int weight) {
         //      System.out.println(i + " " + weight);
 
         if (i == 0 || weight == 0)
@@ -96,8 +104,15 @@ class MemoSolver extends KnapsackSolver {
     }
 }
 
-class BottomUpSolver extends KnapasackSolver() {
-    double solve() {
+class BottomUpSolver extends KnapsackSolver {
+
+    BottomUpSolver(int[] w, int[] p) {
+        super(w, p);
+    }
+
+    @Override
+    double solve2(int n, int weight) {
+        n++;
         int [] best = new int[weight + 1];
 
         for (int i = 0; i < n; i++) {
@@ -112,44 +127,27 @@ class BottomUpSolver extends KnapasackSolver() {
 class Main {
 
     static int w[], p[];
-    static double memo[][];
 
     public static void main(String[] args) {
+
+        // read
         Scanner sc = new Scanner(System.in);
-
-        while (sc.hasNext()) {
-            // read
-            int n = sc.nextInt();
-            int maxWeight = sc.nextInt();
-
-            w = new int[n];
-            p = new int[n];
-            memo = new double[n][maxWeight + 1];
+        int n = sc.nextInt();
+        int maxWeight = sc.nextInt();
+        w = new int[n];
+        p = new int[n];
+        for (int i = 0; i < n; i++){
+            w[i] = sc.nextInt();
+            p[i] = sc.nextInt();
         }
-
-        //     for (int i = 0; i < n; i++)
-        //         for (int j = 0; j < maxWeight + 1; j++)
-        //             memo[i][j] = -1;
-
-        //     for (int i = 0; i < n; i++){
-        //         w[i] = sc.nextInt();
-        //         p[i] = sc.nextInt();
-        //     }
-
-        //     // solve and print
-        //     System.out.println(profit(n - 1, maxWeight));
-        //     System.out.println(profit(n - 1, maxWeight));
-        //     System.out.println(profitMemo(n - 1, maxWeight));
-        //     System.out.println(bottomUp(n, maxWeight));
-
-        //     // TODO add timing code
-        // }
         sc.close();
 
-        (new CompleteSearchSolver(w, p)).solve();
-        (new CompleteSearchPrunedSolver(w, p)).solve();
-
-        (new MemoSolver(w, p)).solve();
-        (new BottomUpSolver(w, p)).solve();
+        double result = (new CompleteSearchSolver(w, p)).solve(maxWeight);
+        System.out.println(result);
+        double result2 = (new CompleteSearchPrunedSolver(w, p)).solve(maxWeight);
+        System.out.println(result2);
+        double result3 = (new MemoSolver(w, p, maxWeight)).solve(maxWeight);
+        System.out.println(result3);
+        (new BottomUpSolver(w, p)).solve(maxWeight);
     }
 }
