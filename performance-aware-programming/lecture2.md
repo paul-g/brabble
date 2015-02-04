@@ -43,34 +43,41 @@ __Note__
 
 TODO image
 
+## Complete Search
+
+* TODO Picture and example
+
 
 ## Complete Search
 
 * Explores the space of possible solutions to find the best one
-* Since it explores the _entire space_ it is correct...
-* ... but it is also (in general) _very slow_
+     * it is definitely __correct__...
+     * but can also be __very slow__
 
 ```
-solutions = generate_all_solutions()
-for solution in solutions:
+for solution in generate_all_solutions():
   if check(solution):
     print solution
 ```
 
 
-## Complete Search - With pruning
+## Complete Search - Recursive, with pruning
 
 ```
-bactrack(solution)
+search(solution)
   if reject(solution) return
   if check(solution) print(solution)
   for node in valid_next_nodes(solutions):
-    backtrack(solution ++ node)
+    search(solution ++ node)
 ```
 
 * reject may seem like a minor addition, but it discards an entire
   solution sub-tree (this is called _pruning_), for which it would be
   impossible to obtain a valid solution
+
+## Complete Search - Visualisation
+
+
 
 ## Complete Search - Discrete Knapsack
 
@@ -85,6 +92,34 @@ TODO Add picture of the items (I)
 3. When is a solution correct and optimal?
     * We only know at the end...
 
+
+4. What are the valid_next_nodes ?
+
+
+
+## Complete Search - Discrete Knapsack Recursive
+
+```Java
+double solve(int [] w, int [] p,
+             int i, int weight)
+{
+
+  // terminate when we have no more items to use
+  if (i == 0) return 0;
+
+  // if the current item weighs more than our capacity, don't use it
+  if (w[i] > weight)
+     return solve(w, p, i - 1, weight);
+
+  // else pick the best profit between picking and not picking the item
+  return max(solve(w, p, i - 1, weight),
+             solve(w, p, i - 1, weight - w[i]) + p[i]);
+}
+```
+
+## Complete Search - Discrete Knapsack
+
+TODO going to the pub
 
 ## Complete Search - Discrete Knapsack
 
@@ -106,13 +141,7 @@ TODO Add picture of the items (I)
 
 1. Dynamic Programming much faster
 
-## Greedy
-
-1. For KNAP-FR we can do better
-    2. Greedy approach
-
-## Sorting in Java
-
+# Questions
 
 
 ## Comparison
@@ -137,3 +166,12 @@ TODO Add picture of the items (I)
     * Project Euler
 
 ## Next Time
+
+
+
+## Greedy
+
+1. For KNAP-FR we can do better
+    2. Greedy approach
+
+## Sorting in Java
