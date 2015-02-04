@@ -4,90 +4,94 @@ import static java.lang.Math.*;
 
 abstract class KnapsackSolver {
 
-    protected int w[], p[];
+    protected Integer w[], p[];
     protected int calls;
 
-    abstract double solve2(int i, int weight);
-
-    Result solve(int [] w, int [] p, int maxWeight) {
+    Result run(Integer [] w, Integer [] p, int maxWeight) {
         this.w = w;
         this.p = p;
         this.calls = 0;
-        double res = solve2(w.length - 1, maxWeight);
+        double res = solve(w.length - 1, maxWeight);
         return new Result(res, this.calls);
     }
+
+    abstract double solve(int i, int weight);
 }
 
 class CompleteSearchSolver extends KnapsackSolver {
     @Override
-    double solve2(int i, int weight) {
-        // performance
-        // System.out.println(i + " " + weight);
+    double solve(int currentItem, int spareCapacity) {
         this.calls++;
+        if (currentItem == 0) return 0;
+        if (w[currentItem] > spareCapacity)
+            return solve(currentItem - 1, spareCapacity);
 
-        if (i == 0)
-            return 0;
-        if (w[i] <= weight)
-            return max(solve2(i - 1, weight),
-                       solve2(i - 1, weight - w[i]) + p[i]);
-        return solve2(i - 1, weight);
+        double profitIfPicked = solve(currentItem - 1,
+                                      spareCapacity - w[currentItem]) + p[currentItem];
+        double profitIfNotPicked = solve(currentItem - 1, spareCapacity);
+
+
+        return max(profitIfPicked, profitIfNotPicked);
     }
 }
 
 class CompleteSearchPrunedSolver extends KnapsackSolver {
-
     @Override
-    double solve2(int i, int weight) {
-        // performance
-        //        System.out.println(i + " " + weight);
+    double solve(int currentItem, int spareCapacity) {
+        //        System.out.println(currentItem + " " + spareCapacity);
         this.calls++;
+        if (currentItem == 0) return 0;
+        if (spareCapacity == 0) return 0;
+        if (w[currentItem] > spareCapacity)
+            return solve(currentItem - 1, spareCapacity);
 
-        if (i == 0 || weight == 0)
-            return 0;
-        if (w[i] <= weight)
-            return max(solve2(i - 1, weight),
-                       solve2(i - 1, weight - w[i]) + p[i]);
-        return solve2(i - 1, weight);
+        double profitIfPicked = solve(currentItem - 1,
+                                      spareCapacity - w[currentItem]) + p[currentItem];
+        double profitIfNotPicked = solve(currentItem - 1, spareCapacity);
+
+
+        return max(profitIfPicked, profitIfNotPicked);
     }
 }
 
 class MemoSolver extends KnapsackSolver {
-
-    private double memo[][];
-
-    public double memo(int i, int weight) {
-        if (memo[i][weight] == -1)
-            memo[i][weight] = solve3(i, weight);
-        return memo[i][weight];
-    }
-
-    // the recurrence is the same, but we cache the results in memo to
-    // avoid unnecessary computation
-    double solve3 (int i, int weight) {
-        //      System.out.println(i + " " + weight);
-        calls++;
-        if (i == 0 || weight == 0)
-            return 0;
-        if (w[i] <= weight)
-            return max(memo(i - 1, weight),
-                       memo(i - 1, weight - w[i]) + p[i]);
-        return memo(i - 1, weight);
-    }
+    double [][] memo;
 
     @Override
-    double solve2 (int v, int weight) {
-        memo = new double[w.length + 1][weight + 1];
-        for (int i = 0; i < w.length; i++)
-            for (int j = 0; j < weight + 1; j++)
+    double solve (int currentItem, int spareCapacity) {
+        // build cache
+        memo = new double [w.length + 1][spareCapacity + 1];
+        for (int i = 0; i < w.length + 1; i++)
+            for (int j = 0 ;j < spareCapacity + 1; j++)
                 memo[i][j] = -1;
-        return solve3(v, weight);
+
+        return solve2(currentItem, spareCapacity);
+    }
+
+    double memo(int currentItem, int spareCapacity) {
+        if (memo[currentItem][spareCapacity] == -1)
+            memo[currentItem][spareCapacity] = solve2(currentItem, spareCapacity);
+        return memo[currentItem][spareCapacity];
+    }
+
+    double solve2(int currentItem, int spareCapacity) {
+        this.calls++;
+        if (currentItem == 0) return 0;
+        if (spareCapacity == 0) return 0;
+        if (w[currentItem] > spareCapacity)
+            return memo(currentItem - 1, spareCapacity);
+
+        double profitIfPicked = memo(currentItem - 1,
+                                     spareCapacity - w[currentItem]) + p[currentItem];
+        double profitIfNotPicked = memo(currentItem - 1, spareCapacity);
+
+        return max(profitIfPicked, profitIfNotPicked);
     }
 }
 
 class BottomUpSolver extends KnapsackSolver {
-
     @Override
-    double solve2(int n, int weight) {
+    double solve (int v, int weight) {
         n++;
         int [] best = new int[weight + 1];
 
@@ -98,6 +102,7 @@ class BottomUpSolver extends KnapsackSolver {
             }
         }
         return best[weight];
+
     }
 }
 
@@ -113,7 +118,7 @@ class Main {
         tr.addSolver(new CompleteSearchSolver());
         tr.addSolver(new CompleteSearchPrunedSolver());
         tr.addSolver(new MemoSolver());
-        tr.addSolver(new BottomUpSolver());
+        // tr.addSolver(new BottomUpSolver());
 
         // run benchmarks
         tr.run();
@@ -133,8 +138,8 @@ class TestRunner {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
         int maxWeight = sc.nextInt();
-        int [] w = new int[n];
-        int [] p = new int[n];
+        Integer [] w = new Integer[n];
+        Integer [] p = new Integer[n];
         for (int i = 0; i < n; i++){
             w[i] = sc.nextInt();
             p[i] = sc.nextInt();
@@ -149,7 +154,7 @@ class TestRunner {
         List<Double> results = new ArrayList<>();
         for (KnapsackSolver ks : solvers) {
             long start = System.currentTimeMillis();
-            Result r = ks.solve(p.w, p.p, p.maxWeight);
+            Result r = ks.run(p.w, p.p, p.maxWeight);
             long tookMs = System.currentTimeMillis() - start;
             System.out.format("Result: %f Took (ms): %d Calls: %d\n",
                               r.result, tookMs, r.calls);
@@ -158,10 +163,10 @@ class TestRunner {
 }
 
 class Problem {
-    final int [] w;
-    final int [] p;
+    final Integer [] w;
+    final Integer [] p;
     final int maxWeight;
-    Problem(int [] w, int [] p, int maxWeight) {
+    Problem(Integer [] w, Integer [] p, int maxWeight) {
         this.w = w;
         this.p = p;
         this.maxWeight = maxWeight;
