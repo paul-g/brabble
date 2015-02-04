@@ -5,7 +5,6 @@ import static java.lang.Math.*;
 abstract class KnapsackSolver {
 
     protected int w[], p[];
-    protected double memo[][];
     protected int calls;
 
     abstract double solve2(int i, int weight);
@@ -56,29 +55,15 @@ class MemoSolver extends KnapsackSolver {
 
     private double memo[][];
 
-    @Override
-    Result solve(int [] w, int [] p, int maxWeight) {
-        this.w = w;
-        this.p = p;
-        memo = new double[w.length + 1][maxWeight + 1];
-        for (int i = 0; i < w.length; i++)
-            for (int j = 0; j < maxWeight + 1; j++)
-                memo[i][j] = -1;
-        this.calls = 0;
-        double res = solve2(w.length - 1, maxWeight);
-        return new Result(res, this.calls);
-    }
-
     public double memo(int i, int weight) {
         if (memo[i][weight] == -1)
-            memo[i][weight] = solve2(i, weight);
+            memo[i][weight] = solve3(i, weight);
         return memo[i][weight];
     }
 
     // the recurrence is the same, but we cache the results in memo to
     // avoid unnecessary computation
-    @Override
-    double solve2 (int i, int weight) {
+    double solve3 (int i, int weight) {
         //      System.out.println(i + " " + weight);
         calls++;
         if (i == 0 || weight == 0)
@@ -87,6 +72,15 @@ class MemoSolver extends KnapsackSolver {
             return max(memo(i - 1, weight),
                        memo(i - 1, weight - w[i]) + p[i]);
         return memo(i - 1, weight);
+    }
+
+    @Override
+    double solve2 (int v, int weight) {
+        memo = new double[w.length + 1][weight + 1];
+        for (int i = 0; i < w.length; i++)
+            for (int j = 0; j < weight + 1; j++)
+                memo[i][j] = -1;
+        return solve3(v, weight);
     }
 }
 
@@ -99,6 +93,7 @@ class BottomUpSolver extends KnapsackSolver {
 
         for (int i = 0; i < n; i++) {
             for (int j = weight; j >= 1; j--) {
+                this.calls++;
                 best[j] = max(best[j], j - w[i] < 0 ? 0 : best[j - w[i]] + p[i]);
             }
         }
@@ -156,7 +151,7 @@ class TestRunner {
             long start = System.currentTimeMillis();
             Result r = ks.solve(p.w, p.p, p.maxWeight);
             long tookMs = System.currentTimeMillis() - start;
-            System.out.format("Result: %f Took (ms): %d calls %d\n",
+            System.out.format("Result: %f Took (ms): %d Calls: %d\n",
                               r.result, tookMs, r.calls);
         }
     }
