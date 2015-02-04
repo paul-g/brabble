@@ -6,35 +6,20 @@ abstract class KnapsackSolver {
 
     protected int w[], p[];
     protected double memo[][];
-    protected int cacheHits, unique, calls;
-
-    KnapsackSolver(int[] w, int[] p) {
-        this.w = w;
-        this.p = p;
-    }
+    protected int calls;
 
     abstract double solve2(int i, int weight);
 
-    double solve(int maxWeight) {
+    Result solve(int [] w, int [] p, int maxWeight) {
+        this.w = w;
+        this.p = p;
         this.calls = 0;
-        this.cacheHits = 0;
-        this.unique = 0;
-        long start = System.currentTimeMillis();
         double res = solve2(w.length - 1, maxWeight);
-        long tookMs = System.currentTimeMillis() - start;
-        System.out.println(tookMs);
-        // System.out.println(calls);
-        // System.out.println(cacheHits);
-        // System.out.println(unique);
-        return res;
+        return new Result(res, this.calls);
     }
 }
 
 class CompleteSearchSolver extends KnapsackSolver {
-    CompleteSearchSolver(int[] w, int[] p) {
-        super(w, p);
-    }
-
     @Override
     double solve2(int i, int weight) {
         // performance
@@ -51,10 +36,6 @@ class CompleteSearchSolver extends KnapsackSolver {
 }
 
 class CompleteSearchPrunedSolver extends KnapsackSolver {
-
-    CompleteSearchPrunedSolver(int[] w, int[] p) {
-        super(w, p);
-    }
 
     @Override
     double solve2(int i, int weight) {
@@ -75,12 +56,17 @@ class MemoSolver extends KnapsackSolver {
 
     private double memo[][];
 
-    public MemoSolver(int w[], int p[], int maxWeight) {
-        super(w, p);
+    @Override
+    Result solve(int [] w, int [] p, int maxWeight) {
+        this.w = w;
+        this.p = p;
         memo = new double[w.length + 1][maxWeight + 1];
         for (int i = 0; i < w.length; i++)
             for (int j = 0; j < maxWeight + 1; j++)
                 memo[i][j] = -1;
+        this.calls = 0;
+        double res = solve2(w.length - 1, maxWeight);
+        return new Result(res, this.calls);
     }
 
     public double memo(int i, int weight) {
@@ -94,7 +80,7 @@ class MemoSolver extends KnapsackSolver {
     @Override
     double solve2 (int i, int weight) {
         //      System.out.println(i + " " + weight);
-
+        calls++;
         if (i == 0 || weight == 0)
             return 0;
         if (w[i] <= weight)
@@ -105,10 +91,6 @@ class MemoSolver extends KnapsackSolver {
 }
 
 class BottomUpSolver extends KnapsackSolver {
-
-    BottomUpSolver(int[] w, int[] p) {
-        super(w, p);
-    }
 
     @Override
     double solve2(int n, int weight) {
@@ -130,24 +112,72 @@ class Main {
 
     public static void main(String[] args) {
 
-        // read
+        TestRunner tr = new TestRunner();
+
+        // add various solvers
+        tr.addSolver(new CompleteSearchSolver());
+        tr.addSolver(new CompleteSearchPrunedSolver());
+        tr.addSolver(new MemoSolver());
+        tr.addSolver(new BottomUpSolver());
+
+        // run benchmarks
+        tr.run();
+    }
+}
+
+class TestRunner {
+
+    List<KnapsackSolver> solvers = new ArrayList<>();
+
+    void addSolver(KnapsackSolver k) {
+        solvers.add(k);
+    }
+
+    Problem generateProblem() {
+        // read problem from file
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
         int maxWeight = sc.nextInt();
-        w = new int[n];
-        p = new int[n];
+        int [] w = new int[n];
+        int [] p = new int[n];
         for (int i = 0; i < n; i++){
             w[i] = sc.nextInt();
             p[i] = sc.nextInt();
         }
         sc.close();
 
-        double result = (new CompleteSearchSolver(w, p)).solve(maxWeight);
-        System.out.println(result);
-        double result2 = (new CompleteSearchPrunedSolver(w, p)).solve(maxWeight);
-        System.out.println(result2);
-        double result3 = (new MemoSolver(w, p, maxWeight)).solve(maxWeight);
-        System.out.println(result3);
-        (new BottomUpSolver(w, p)).solve(maxWeight);
+        return new Problem(w, p, maxWeight);
+    }
+
+    void run() {
+        Problem p = generateProblem();
+        List<Double> results = new ArrayList<>();
+        for (KnapsackSolver ks : solvers) {
+            long start = System.currentTimeMillis();
+            Result r = ks.solve(p.w, p.p, p.maxWeight);
+            long tookMs = System.currentTimeMillis() - start;
+            System.out.format("Result: %f Took (ms): %d calls %d\n",
+                              r.result, tookMs, r.calls);
+        }
+    }
+}
+
+class Problem {
+    final int [] w;
+    final int [] p;
+    final int maxWeight;
+    Problem(int [] w, int [] p, int maxWeight) {
+        this.w = w;
+        this.p = p;
+        this.maxWeight = maxWeight;
+    }
+}
+
+class Result {
+    int calls;
+    double result;
+    Result(double result, int calls) {
+        this.calls = calls;
+        this.result = result;
     }
 }
