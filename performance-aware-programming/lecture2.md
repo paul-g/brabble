@@ -3,49 +3,69 @@
 
 ## Last time
 
-1. A quick look at:
-    2. What performance is
-    3. How to measure it
-    4. How to run a simple benchmark and plot results
+1. What performance is $P = \frac{1}{Wall Clock Time}$
+2. How to measure _Wall Clock Time_
+    * `time`, `/usr/bin/time -v`
+    * Profilers `java -Xprof <Program>`, `jvisualvm`
+    * `System.currentTimeMillis()`, `System.nanoTime()`
+3. How to run a simple benchmark and plot results
+    * Write a script to automate (`bash`, `python`)
+    * Plot with `gnuplot` (or `matplotlib`)
 
-2. A surprising example of optimisation -- loop interchange
-    3. Same number of operations -- Much better performance
-    5. Since same number of operations => the loop interchanged
-       version is somehow better for levels that are below the
-       programming language (e.g. hardware friendly)
-    6. (More in Lecture 3)
+## Last Time
+
+* Loop interchange
+
+TODO add picture
+
+\pause
+
+*  Do you know why?
+    *  If not -> come to Lecture 3
+    *  If yes, can you think of a _second_ reason?
 
 ## This time
 
 1. What improvement can we get by optimising our _algorithms_
 
 2. We will look at the famous _knapsack_ problem
-    3. Start with a correct but _sloooow_ version (Complete Search)
-    4. Continue with a faster version (Dynamic Programming)
-    5. Show how we can make it even faster (for an extension to the problem) (Greedy)
+    3. Start with a correct but _sloooow_ version (__Complete Search__)
+    4. Continue with a faster version (__Dynamic Programming__)
+
+# The Problem
 
 ## The Discrete Knapsack Problem
 
-Given:
+__Given__
 
 1. a list of items (I) with weights ($W_i$) and prices ($P_i$)
 2. a backpack with a limited weight capacity ($W_{max}$),
 
-Maximise the profit achieved by fitting items into the backpack.
+_Maximise the profit achieved by fitting items into the backpack._
 
-Mathematically, maximise $\sum$ subject to $\sum$
+\pause
+
+* Mathematically, maximise $\sum P_j$ subject to $\sum W_j <= W_{max}$
+
+\pause
 
 __Note__
-1. You are not allowed to split items.
+
+1. You are not allowed to split an item.
+
 2. Each item can only be used once.
 
 ## The Discrete Knapsack Problem - Example
 
 TODO image
 
+# Solution I - Correct, but slooow...
+
 ## Complete Search
 
-* TODO Picture and example
+![](img/no-idea.jpg)
+
+* When you have no idea what to do... do a _complete search_
 
 
 ## Complete Search
@@ -94,7 +114,7 @@ TODO Add picture of the items (I)
 
 
 4. What are the valid_next_nodes ?
-
+    * Next unused items
 
 
 ## Complete Search - Discrete Knapsack Recursive
