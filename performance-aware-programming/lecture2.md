@@ -3,34 +3,58 @@
 
 ## Last time
 
-1. What performance is $P = \frac{1}{Wall Clock Time}$
+1. $Performance = {Wall Clock Time}^{-1}$
 2. How to measure _Wall Clock Time_
     * `time`, `/usr/bin/time -v`
-    * Profilers `java -Xprof <Program>`, `jvisualvm`
+    * `java -Xprof`, `jvisualvm`
     * `System.currentTimeMillis()`, `System.nanoTime()`
 3. How to run a simple benchmark and plot results
     * Write a script to automate (`bash`, `python`)
     * Plot with `gnuplot` (or `matplotlib`)
 
-## Last Time
+## Last Time - Matrix Multiply Loop Interchange
 
-* Loop interchange
+* Matrix multiply
+```Java
+for (int i = 0; i < n; i++)      // i
+  for (int j = 0; j < n; j++)    // j
+    for (int k = 0; k < n; k++)  // k
+      c.data[i][j] += data[i][k] * other.data[k][j];
+```
 
-TODO add picture
+* Matrix multiply loop interchange
+```Java
+for (int i = 0; i < n; i++)       // i
+  for (int k = 0; k < n; k++)     // k ---- swapped
+    for (int j = 0; j < n; j++)   // j --|
+      c.data[i][j] += data[i][k] * other.data[k][j];
+```
 
+## Last Time - Matrix Multiply Loop Interchange
+
+![](img/loop-interchange.png)
+
+## Last Time - Matrix Multiply Loop Interchange
+
+* This is incredible:
+    * both routines perform exactly the same operations
+    * still, the loop interchanged version is up to 10X faster...
+    * clearly we can't explain this at the _language_ level
+
+*  If you don't know why,
+    *  __come to Lecture 3__
 \pause
+*  If you don't know a _second_ reason,
+    * __come to Lecture 3__
+\pause
+* Just __come to Lecture 3__
 
-*  Do you know why?
-    *  If not -> come to Lecture 3
-    *  If yes, can you think of a _second_ reason?
 
-## This time
+## This time - Algorithms
 
-1. What improvement can we get by optimising our _algorithms_
+* Why you should have read at least one of these books by the end of
+  your degree...
 
-2. We will look at the famous _knapsack_ problem
-    3. Start with a correct but _sloooow_ version (__Complete Search__)
-    4. Continue with a faster version (__Dynamic Programming__)
 
 # The Problem
 
@@ -70,30 +94,35 @@ TODO image
 
 ## Complete Search
 
-* Explores the space of possible solutions to find the best one
+* As the name suggests...
+\pause
+* ...CS explores the _entire space of possible solutions_ to find the
+  best one
      * it is definitely __correct__...
      * but can also be __very slow__
-
-```
-for solution in generate_all_solutions():
-  if check(solution):
-    print solution
+\pause
+*
+```Java
+for (Solution sol : generate_all_solutions())
+  if (sol.check())
+      sol.print()
 ```
 
 
 ## Complete Search - Recursive, with pruning
 
+* Recursive with pruning
+*
+```Java
+void search(Solution sol)
+  if (sol.reject()) return;
+  if (sol.check())  sol.print();
+  for (Node n : valid_next_nodes(sol)):
+    search(new Solution(sol, node))
 ```
-search(solution)
-  if reject(solution) return
-  if check(solution) print(solution)
-  for node in valid_next_nodes(solutions):
-    search(solution ++ node)
-```
-
-* reject may seem like a minor addition, but it discards an entire
-  solution sub-tree (this is called _pruning_), for which it would be
-  impossible to obtain a valid solution
+\pause
+* `sol.reject()` may discard an entire solution sub-tree, for which it
+  would be impossible to obtain a valid solution
 
 ## Complete Search - Visualisation
 
@@ -137,42 +166,65 @@ double solve(int [] w, int [] p,
 }
 ```
 
-## Complete Search - Discrete Knapsack
+##
 
-TODO going to the pub
+![](img/slow.jpg)
 
-## Complete Search - Discrete Knapsack
+<!-- ## Complete Search - Discrete Knapsack -->
 
-* This is solution is correct (modulo implementation bugs)
-* But how fast is it?
-* TODO plots
+<!-- * This is solution is correct (modulo implementation bugs) -->
+<!-- * But how fast is it? -->
+<!-- * TODO plots -->
 
 # Correct (Done). Optimise!
 
-## Dynamic Programming
+## Optimising
 
-1. We can _cache_ overlapping problems
+* We can see that for a relatively large number of items our solution
+  becomes _insanely slow_
 
-## Performance Comparison - A Better Look at the Code
+* Ideas for optimisation
+    * Is there some redundant computation we can eliminate?
+    * Is there some operation we can perform more efficiently?
 
+\pause
 
+* Let's have a closer look at the _sub-problems_ we are solving...
+
+## Optimising - Overlapping problems
+
+TODO picture of overlapping subproblems
+
+* We can _cache_ overlapping problems
+
+## Optimising - A note on recursion
+
+* Recursive solutions tend to be slow(ish)
+* Unless the recursion is obviously tail-recursive, some compilers may
 
 ## Performance Comparison
 
-1. Dynamic Programming much faster
+* Dynamic Programming
+    * considerably fewer function calls
+    * considerably faster
+    * a bit more challenging to develop
+    * restricted by maximum problem size
+    * Effectively we are trading _space_ for _compute_
 
 # Questions
 
 
 ## Comparison
 
-
 ## Summary
 
-1. Hardware optimisation can give us a great performance boost (e.g. 10-20X)
-2. Better algorithms are much much better
-3. Plot of O(2^n) vs O(n * w)
-4. Plot of O(2^n) vs O(nlong) Greedy
+* Hardware optimisation can give us a great performance boost (e.g. 10-20X)
+* But, better algorithms are plain awesome:
+    * CS --$O(2^n)$ vs DP -- $O(n * w)$
+
+## Algorithms
+
+* Algorithms tree
 
 ## Follow Up
 
@@ -187,11 +239,9 @@ TODO going to the pub
 
 ## Next Time
 
+*
 
+* Slides / code from
+    * I will also upload them on CATE
 
-## Greedy
-
-1. For KNAP-FR we can do better
-    2. Greedy approach
-
-## Sorting in Java
+# Questions?
