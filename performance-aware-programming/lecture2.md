@@ -52,9 +52,18 @@ for (int i = 0; i < n; i++)       // i
 
 ## This time - Algorithms
 
-* Why you should have read at least one of these books by the end of
-  your degree...
-
+\begin{columns}
+    \column{.40\textwidth}
+    \begin{figure}
+      \includegraphics[]{img/skiena.jpg}\\
+    \end{figure}
+    Steven Skiena -- \emph{The Algorithm Design Manual}
+    \column{.45\textwidth}
+    \begin{figure}
+      \includegraphics[]{img/algorithms.jpg}\\
+    \end{figure}
+    Thomas Cormen et al. -- \emph{Introduction to Algorithms}
+\end{columns}
 
 # The Problem
 
@@ -62,7 +71,7 @@ for (int i = 0; i < n; i++)       // i
 
 __Given__
 
-1. a list of items (I) with weights ($W_i$) and prices ($P_i$)
+1. a list of items (I) with weights ($W_i$) and profits ($P_i$)
 2. a backpack with a limited weight capacity ($W_{max}$),
 
 _Maximise the profit achieved by fitting items into the backpack._
@@ -75,13 +84,20 @@ _Maximise the profit achieved by fitting items into the backpack._
 
 __Note__
 
-1. You are not allowed to split an item.
+1. Not allowed to split an item (hence __discrete__ knapsack).
 
 2. Each item can only be used once.
 
 ## The Discrete Knapsack Problem - Example
 
-TODO image
+* Assume $W_{max} = 12$
+
+* I = {($W_i, P_i$)} = {(5, 12), (5, 10), (6, 11)}
+
+* Then the maximum profit is __23__
+    * Pick first and last item
+
+* Seems simple enough, how do we solve it?
 
 # Solution I - Correct, but slooow...
 
@@ -124,26 +140,124 @@ void search(Solution sol)
 * `sol.reject()` may discard an entire solution sub-tree, for which it
   would be impossible to obtain a valid solution
 
-## Complete Search - Visualisation
+* Let's see how this would work for knapsack...
+
+## Complete Search For Discrete Knapsack
+
+* Assume $W_{max} = 12$, items as below ($W_i, P_i$)
+
+Items    Picked   Wcurrent   Profit
+-----   -------- ---------- --------
+  No               0         0
+(5, 12)
+(5, 10)
+(6, 11)
+
+* Best_profit = ??
 
 
+## Complete Search For Discrete Knapsack
+
+* Assume $W_{max} = 12$, items as below ($W_i, P_i$)
+
+Items    Picked   Wcurrent   Profit
+-----   -------- ---------- --------
+  No               0         0
+(5, 12)     1      5        12
+(5, 10)
+(6, 11)
+
+* Best_profit = ??
+
+## Complete Search For Discrete Knapsack
+
+* Assume $W_{max} = 12$, items as below ($W_i, P_i$)
+
+Items    Picked   Wcurrent   Profit
+-----   -------- ---------- --------
+  No               0         0
+(5, 12)     1      5        12
+(5, 10)     1      10       22
+(6, 11)
+
+* Best_profit = ??
+
+## Complete Search For Discrete Knapsack
+
+* Assume $W_{max} = 12$, items as below ($W_i, P_i$)
+
+Items    Picked   Wcurrent   Profit
+-----   -------- ---------- --------
+  No               0         0
+(5, 12)     1      5        12
+(5, 10)     1      10       22
+(6, 11)     0      10       22
+
+* Best_profit = 22
+
+
+## Complete Search For Discrete Knapsack
+
+* Assume $W_{max} = 12$, items as below ($W_i, P_i$)
+
+Items    Picked   Wcurrent   Profit
+-----   -------- ---------- --------
+  No               0         0
+(5, 12)     1      5        12
+(5, 10)     1      10       22
+(6, 11)
+
+* Best_profit = 22
+
+## Complete Search For Discrete Knapsack
+
+* Assume $W_{max} = 12$, items as below ($W_i, P_i$)
+
+Items    Picked   Wcurrent   Profit
+-----   -------- ---------- --------
+  No               0         0
+(5, 12)     1      5        12
+(5, 10)     0      5        12
+(6, 11)
+
+* Best_profit = 22
+
+## Complete Search For Discrete Knapsack
+
+* Assume $W_{max} = 12$, items as below ($W_i, P_i$)
+
+Items    Picked   Wcurrent   Profit
+-----   -------- ---------- --------
+  No               0         0
+(5, 12)     1      5        12
+(5, 10)     0      5        12
+(6, 11)     1      11       23
+
+* Best_profit = ~~22~~ __23__
 
 ## Complete Search - Discrete Knapsack
-
-TODO Add picture of the items (I)
 
 1. What is a possible solution?
     * A subset of I
 
+\pause
+
 2. When do we reject a solution ?
     * When $W_{current} > W_{max}$
 
-3. When is a solution correct and optimal?
-    * We only know at the end...
+\pause
 
 
-4. What are the valid_next_nodes ?
-    * Next unused items
+3. What are the valid_next_nodes ?
+    * Next unused item(s)
+
+\pause
+
+4. When is a solution optimal?
+    * We only know at the very end...
+
+
+
 
 
 ## Complete Search - Discrete Knapsack Recursive
@@ -168,6 +282,10 @@ double solve(int [] w, int [] p,
 
 ##
 
+![](img/right.jpg )
+
+##
+
 ![](img/slow.jpg)
 
 <!-- ## Complete Search - Discrete Knapsack -->
@@ -180,8 +298,10 @@ double solve(int [] w, int [] p,
 
 ## Optimising
 
-* We can see that for a relatively large number of items our solution
-  becomes _insanely slow_
+* We can see that for a relatively small number of items our solution
+  is _extremely slow_
+
+\pause
 
 * Ideas for optimisation
     * Is there some redundant computation we can eliminate?
@@ -193,14 +313,31 @@ double solve(int [] w, int [] p,
 
 ## Optimising - Overlapping problems
 
-TODO picture of overlapping subproblems
+* How could there be _redundant_ computation?
+
+* We are solving this recurrence relation
+```
+solve(i, s) = max(solve(i - 1, s),
+                  solve(i - 1, s - w[i]) + p[i])
+```
+
+* Overlapping problems occur if at any point we get to the same item
+    * with the same spare capacity
+    * but through a different path
+
+## Optimising - Overlapping problems
+
+* $W_{max} = 20$, I = {(5, 12), (5, 10), (6, 11), (4, 20), (5, 5)}
+
+![](img/overlapping.png)
+\pause
 
 * We can _cache_ overlapping problems
 
-## Optimising - A note on recursion
+<!-- ## Optimising - A note on recursion -->
 
-* Recursive solutions tend to be slow(ish)
-* Unless the recursion is obviously tail-recursive, some compilers may
+<!-- * Recursive solutions tend to be slow(ish) -->
+<!-- * Unless the recursion is obviously tail-recursive, some compilers may -->
 
 ## Performance Comparison
 
@@ -211,20 +348,23 @@ TODO picture of overlapping subproblems
     * restricted by maximum problem size
     * Effectively we are trading _space_ for _compute_
 
-# Questions
-
-
-## Comparison
-
-## Summary
-
-* Hardware optimisation can give us a great performance boost (e.g. 10-20X)
-* But, better algorithms are plain awesome:
+* Better algorithms are plain _awesome_
     * CS --$O(2^n)$ vs DP -- $O(n * w)$
 
 ## Algorithms
 
-* Algorithms tree
+\begin{columns}
+    \column{.40\textwidth}
+    \begin{figure}
+      \includegraphics[]{img/skiena.jpg}\\
+    \end{figure}
+    Steven Skiena -- \emph{The Algorithm Design Manual}
+    \column{.45\textwidth}
+    \begin{figure}
+      \includegraphics[]{img/algorithms.jpg}\\
+    \end{figure}
+    Thomas Cormen et al. -- \emph{Introduction to Algorithms}
+\end{columns}
 
 ## Follow Up
 
@@ -239,9 +379,11 @@ TODO picture of overlapping subproblems
 
 ## Next Time
 
-*
+* We delve deeper into the hardware side
+    * Caches
+    * Vectorization
+    * Branch prediction
 
-* Slides / code from
-    * I will also upload them on CATE
+* Slides / code for Lecture 1 are on CATE
 
 # Questions?
