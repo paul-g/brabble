@@ -22,8 +22,7 @@ class CompleteSearch extends KnapsackSolver {
 
     @Override
     /**
-     * @param currentItem the item being considered (starts from N to
-     * 1)
+     * @param currentItem the item being considered (starts from N to 1)
      */
     int solve(int currentItem, int spareCapacity) {
         this.calls++;
@@ -101,7 +100,7 @@ class BottomUpSolver extends KnapsackSolver {
     int solve (int v, int weight) {
         int [] best = new int[weight + 1];
 
-        for (int i = 0; i < weight; i++) {
+        for (int i = 0; i < v; i++) {
             for (int j = weight; j >= 1; j--) {
                 this.calls++;
                 best[j] = max(best[j], j - w[i] < 0 ? 0 : best[j - w[i]] + p[i]);
@@ -128,7 +127,7 @@ class Main {
         tr.addSolver(new CompleteSearch());
         tr.addSolver(new CompleteSearchPruned());
         tr.addSolver(new MemoSolver());
-        // tr.addSolver(new BottomUpSolver());
+        tr.addSolver(new BottomUpSolver());
 
         // run benchmarks
         tr.run();
