@@ -1,13 +1,20 @@
 % Performance Aware Programming
 % Paul Grigoras
 
+
 ## Last time
 
 1. $Performance = {Wall Clock Time}^{-1}$
+
+\pause
+
 2. How to measure _Wall Clock Time_
     * `time`, `/usr/bin/time -v`
     * `java -Xprof`, `jvisualvm`
     * `System.currentTimeMillis()`, `System.nanoTime()`
+
+\pause
+
 3. How to run a simple benchmark and plot results
     * Write a script to automate (`bash`, `python`)
     * Plot with `gnuplot` (or `matplotlib`)
@@ -41,14 +48,11 @@ for (int i = 0; i < n; i++)       // i
     * still, the loop interchanged version is up to 10X faster...
     * clearly we can't explain this at the _language_ level
 
-*  If you don't know why,
-    *  __come to Lecture 3__
+*  If you don't know why...
 \pause
-*  If you don't know a _second_ reason,
-    * __come to Lecture 3__
+*  ... or don't know a _second_ reason why
 \pause
-* Just __come to Lecture 3__
-
+*  __come to Lecture 3__
 
 ## This time - Algorithms
 
@@ -146,12 +150,18 @@ void search(Solution sol)
 
 * Assume $W_{max} = 12$, items as below ($W_i, P_i$)
 
-Items    Picked   Wcurrent   Profit
------   -------- ---------- --------
-  No               0         0
-(5, 12)
-(5, 10)
-(6, 11)
+
+\begin{table}[h]
+\begin{tabular}{llll}
+Items  & Picked &   Wcurrent &   Profit \\
+\hline
+  No &             &   0 &         0 \\
+(5, 12) \\
+(5, 10) \\
+(6, 11) \\
+\end{tabular}
+\end{table}
+
 
 * Best_profit = ??
 
@@ -160,12 +170,38 @@ Items    Picked   Wcurrent   Profit
 
 * Assume $W_{max} = 12$, items as below ($W_i, P_i$)
 
-Items    Picked   Wcurrent   Profit
------   -------- ---------- --------
-  No               0         0
-(5, 12)     1      5        12
-(5, 10)
-(6, 11)
+
+\begin{table}[h]
+\begin{tabular}{llll}
+Items  & Picked &   Wcurrent &   Profit \\
+\hline
+  No &             &   0 &         0 \\
+(5, 12) & 1 & 5 & 12  \\
+(5, 10) \\
+(6, 11) \\
+\end{tabular}
+\end{table}
+
+
+* Best_profit = ??
+
+
+## Complete Search For Discrete Knapsack
+
+* Assume $W_{max} = 12$, items as below ($W_i, P_i$)
+
+
+\begin{table}[h]
+\begin{tabular}{llll}
+Items  & Picked &   Wcurrent &   Profit \\
+\hline
+  No &             &   0 &         0 \\
+(5, 12) & 1 & 5 & 12  \\
+(5, 10) & 1 & 10 & 22 \\
+(6, 11) \\
+\end{tabular}
+\end{table}
+
 
 * Best_profit = ??
 
@@ -173,25 +209,18 @@ Items    Picked   Wcurrent   Profit
 
 * Assume $W_{max} = 12$, items as below ($W_i, P_i$)
 
-Items    Picked   Wcurrent   Profit
------   -------- ---------- --------
-  No               0         0
-(5, 12)     1      5        12
-(5, 10)     1      10       22
-(6, 11)
 
-* Best_profit = ??
+\begin{table}[h]
+\begin{tabular}{llll}
+Items  & Picked &   Wcurrent &   Profit \\
+\hline
+  No &             &   0 &         0 \\
+(5, 12) & 1 & 5 & 12  \\
+(5, 10) & 1 & 10 & 22 \\
+(6, 11) & 0 & 10 & 22 \\
+\end{tabular}
+\end{table}
 
-## Complete Search For Discrete Knapsack
-
-* Assume $W_{max} = 12$, items as below ($W_i, P_i$)
-
-Items    Picked   Wcurrent   Profit
------   -------- ---------- --------
-  No               0         0
-(5, 12)     1      5        12
-(5, 10)     1      10       22
-(6, 11)     0      10       22
 
 * Best_profit = 22
 
@@ -200,12 +229,18 @@ Items    Picked   Wcurrent   Profit
 
 * Assume $W_{max} = 12$, items as below ($W_i, P_i$)
 
-Items    Picked   Wcurrent   Profit
------   -------- ---------- --------
-  No               0         0
-(5, 12)     1      5        12
-(5, 10)     1      10       22
-(6, 11)
+
+\begin{table}[h]
+\begin{tabular}{llll}
+Items  & Picked &   Wcurrent &   Profit \\
+\hline
+  No &             &   0 &         0 \\
+(5, 12) & 1 & 5 & 12  \\
+(5, 10) & 1 & 10 & 22 \\
+(6, 11)  \\
+\end{tabular}
+\end{table}
+
 
 * Best_profit = 22
 
@@ -213,25 +248,38 @@ Items    Picked   Wcurrent   Profit
 
 * Assume $W_{max} = 12$, items as below ($W_i, P_i$)
 
-Items    Picked   Wcurrent   Profit
------   -------- ---------- --------
-  No               0         0
-(5, 12)     1      5        12
-(5, 10)     0      5        12
-(6, 11)
+
+\begin{table}[h]
+\begin{tabular}{llll}
+Items  & Picked &   Wcurrent &   Profit \\
+\hline
+  No &             &   0 &         0 \\
+(5, 12) & 1 & 5 & 12  \\
+(5, 10) & 0 & 5 & 12 \\
+(6, 11)  \\
+\end{tabular}
+\end{table}
+
 
 * Best_profit = 22
+
 
 ## Complete Search For Discrete Knapsack
 
 * Assume $W_{max} = 12$, items as below ($W_i, P_i$)
 
-Items    Picked   Wcurrent   Profit
------   -------- ---------- --------
-  No               0         0
-(5, 12)     1      5        12
-(5, 10)     0      5        12
-(6, 11)     1      11       23
+
+\begin{table}[h]
+\begin{tabular}{llll}
+Items  & Picked &   Wcurrent &   Profit \\
+\hline
+  No &             &   0 &         0 \\
+(5, 12) & 1 & 5 & 12  \\
+(5, 10) & 0 & 5 & 12 \\
+(6, 11) & 1 & 11 & 23  \\
+\end{tabular}
+\end{table}
+
 
 * Best_profit = ~~22~~ __23__
 
@@ -263,18 +311,19 @@ Items    Picked   Wcurrent   Profit
 ## Complete Search - Discrete Knapsack Recursive
 
 ```Java
-double solve(int [] w, int [] p,
-             int i, int weight)
-{
+double solve(int [] w, int [] p, int i, int weight) {
 
   // terminate when we have no more items to use
-  if (i == 0) return 0;
+  // or no more spare capacity
+  if (i == 0 || weight == 0) return 0;
 
-  // if the current item weighs more than our capacity, don't use it
+  // if the current item weighs more than our capacity
+  //   don't use it
   if (w[i] > weight)
      return solve(w, p, i - 1, weight);
 
-  // else pick the best profit between picking and not picking the item
+  // else pick the best profit option
+  //   between using and not using this item
   return max(solve(w, p, i - 1, weight),
              solve(w, p, i - 1, weight - w[i]) + p[i]);
 }
@@ -315,11 +364,15 @@ double solve(int [] w, int [] p,
 
 * How could there be _redundant_ computation?
 
+\pause
+
 * We are solving this recurrence relation
 ```
 solve(i, s) = max(solve(i - 1, s),
                   solve(i - 1, s - w[i]) + p[i])
 ```
+
+\pause
 
 * Overlapping problems occur if at any point we get to the same item
     * with the same spare capacity
@@ -341,14 +394,22 @@ solve(i, s) = max(solve(i - 1, s),
 
 ## Performance Comparison
 
-* Dynamic Programming
+* Dynamic Programming - Pros
     * considerably fewer function calls
     * considerably faster
+
+\pause
+
+* Dynamic Programming - Cons
     * a bit more challenging to develop
     * restricted by maximum problem size
-    * Effectively we are trading _space_ for _compute_
+    * effectively we are trading _space_ for _compute time_
+    * for knapsack, we could do _much better_ in terms of _space_ by
+      using a bottom up (instead of a top down) approach
 
-* Better algorithms are plain _awesome_
+\pause
+
+* Moral of the Story: better algorithms are _awesome_
     * CS --$O(2^n)$ vs DP -- $O(n * w)$
 
 ## Algorithms
@@ -371,11 +432,13 @@ solve(i, s) = max(solve(i - 1, s),
 * Making programs run faster on your own can be depressing
 
 * Fortunately, there are many online communities:
-    * UVA Online
-    * Codeforces
-    * Hackerrank
-    * Topcoder
-    * Project Euler
+    * __UVA Online__ \url{http://uhunt.felix-halim.net/}
+    * __Codeforces__  \url{http://codeforces.com/}
+    * __Hackerrank__ \url{https://www.hackerrank.com/}
+    * __Project Euler__ \url{https://projecteuler.net/}
+
+* For an intro on useful algorithms see last year's AP notes
+    * \url{https://github.com/paul-g/brabble}
 
 ## Next Time
 
@@ -384,6 +447,11 @@ solve(i, s) = max(solve(i - 1, s),
     * Vectorization
     * Branch prediction
 
-* Slides / code for Lecture 1 are on CATE
+##
 
-# Questions?
+\begin{columns}
+    \column{.65\textwidth}
+    \begin{figure}
+      \includegraphics[]{img/no-questions.jpg}\\
+    \end{figure}
+\end{columns}
