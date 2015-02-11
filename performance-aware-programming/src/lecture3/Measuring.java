@@ -19,14 +19,16 @@ public class Measuring {
 
         Matrix a = (new Matrix(size)).fillRandom();
         Matrix b = (new Matrix(size)).fillRandom();
+        long start = System.currentTimeMillis();
         if (algorithm.equals("-s"))
             a.multiply(b);
         else if (algorithm.equals("-f"))
             a.multiplyFaster(b);
         else 
             System.out.println("Unknown option " + algorithm);
+        long end = System.currentTimeMillis();
+        System.out.printlnt("Took " + (end - start) + "ms");
     }
-
 }
 
 /** A vanilla matrix implementation. */
