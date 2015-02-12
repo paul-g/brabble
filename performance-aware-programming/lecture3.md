@@ -8,12 +8,12 @@
 
 \pause
 
-* What about the hardware?
+* What about better hardware?
 
 ## Hardware Over Time
 
 * You might be tempted to think algorithms are king...
-* ... but think about how much our hardware has improved over time
+* ... but think about how much hardware has improved over time
 
 ## Transistor Count Over Time
 
@@ -21,43 +21,49 @@
 
 ## CPU Frequency Over Time
 
-
+## Memory Speed Over Time
 
 ## This Time
 
-* We will look at a few hardware features with a high impact on the
-  performance of (some) applications:
-    * caches
-    * vectorization
+* We will look at a few hardware features with high impact on
+  performance: _caches_ and _vectorization_
 
-* You may be tempted to say _The compiler should do this for me..._
-* and some good compilers do
-* But what if
-    * Interpreted languages
+\pause
+
+*  __PROGRAMMER__ -- _Shouldn't the compiler do this for me?_
+
+\pause
+
+* ... some _good_ compilers do (in _some_ cases)
+* But what if:
+    * Interpreted languages (Python, JavaScript)
     * New languages (bad(_ish_) compilers)
-    * Compiler bugs
-    * Just In Time Compiled (JIT)
-* Even for languages that have been standard for ages (e.g. Java)
-    * We can still use rather simple tricks to help the compiler
-      generate better code
+    * Just In Time Compiled (JIT) languages
+    * You know more about your application than the compiler
+* Even for languages that have been standard for ages (e.g. Java) we
+  can help the compiler generate better code
 
 # Caches
 
 ## The Memory Hierarchy
 
-* Our sytems are composed of cheap and slow memory
-    * Magnetic tape, disks, ssds, DRAM
-* Fast and expensive memory
-    * L1-3 caches, CPU registers
-* The performance for read/write at different levels may vary by a few
-  orders of magnitude
-* Hence, it is important to use our memory hierarchy well...
+* Our sytems are composed of:
+    * cheap and slow memory: magnetic tape, disks, ssds, DRAM
+    * fast and expensive memory: L1-3 caches, CPU registers
+* These form a _hierarchy_:
+    * The higher in the hierarchy the faster and smaller
+    * If used correctly, provides the _illusion_ of fast & large memory
+    * But read/write performance at different levels may vary by a few
+      orders of magnitude
+* It is important to use our memory hierarchy well...
 
 ## Caches
 
+* Caches are fast memory used to store _frequently reused_ data
+* This is handled entirely in hardware and/or by the OS
+* When use effectively they can hide the
 * Caches are fast, but usually quite small
-* Furthermore _caching_ is a fundamental technique in both hardware
-  and algorithm design:
+* _Caching_ is common in both hardware and algorithm design
     * We saw Dynamic Programming makes use of caching
     * Almost all computers today have some form of cache
 
@@ -74,14 +80,16 @@
     * Ensuring cache coherency between multiple processors (on
       multi-processor systems)
 
+## Caches -- A Simple Model
+
 * However, we can do well with a simple model of the cache
     * It has R rows
     * Each row stores K words
-    * The width of a word is 8 bytes (corresponding to double
-      precision)
+    * The width of a word is 8 bytes (double precision)
     * Initially the cache is empty
     * On a cache miss, we fetch the original address as well as the
       neighbouring K - 1 words
+
 
 ## Cache Example
 
@@ -89,23 +97,24 @@
 
 * reading data from cache is much faster than from memory..
 * .. minimizing the number of cache misses can improve performance
-* Which brings us back to...
-
 
 * Modern CPUs can optimise sequential read/write access
     * Data prefetch on linear access pattern
-* We should make use of this
-* Improve locality (spatial and temporal)
-* align code and data
 
+* As a programmer you don't ever know you have a cache...
+\pause
+* ... or do you?
 
 ## Word of Caution
 
-* When dealing with this level of optimisations, it's good to have
-    * A model of the expected performance improvement (_hypothesis_)
-    * Some observation to (hopefully) confirm our hypothesis
-        * Tools to _measure_ various parameters
-        * Rough estimations
+* When optimising applications it is good to have
+    * A model of the expected performance improvement
+    * A relevant benchmark
+    * Means of _measuring_ the performance improvement
+    * Tools to drill down and understand what goes wrong when the
+      _observed_ results do not match the _measured_ results
+
+* Let's proceed to matrix multiply...
 
 ## Matrix Multiply
 
