@@ -4,6 +4,26 @@
 
 ## Last Time
 
+\scriptsize
+
+```
+ n           Class               Result     Took(ms)       Calls
+---          -----               ------     --------       -----
+ 60         CompleteSearch        254       5267     1842695079
+ 60   CompleteSearchPruned        254       4976     1613439769
+ 60             MemoSolver        254          1           2689
+ 60         BottomUpSolver        254          1           2950
+-----------------------------------------------------------------
+ 70         CompleteSearch        285      39796    14206301293
+ 70   CompleteSearchPruned        285      36663    12132555911
+ 70             MemoSolver        285          1           3189
+ 70         BottomUpSolver        285          0           3450
+```
+
+\normalsize
+
+## Last Time
+
 * Better algorithms make a huge difference!
 
 \pause
@@ -19,9 +39,9 @@
 
 ![](img/moores-law.png)
 
-## CPU Frequency Over Time
+## Memory CPU Gap
 
-## Memory Speed Over Time
+![](img/memory-cpu-gap.png)
 
 ## This Time
 
@@ -56,8 +76,8 @@
 * These form a _hierarchy_:
     * The higher in the hierarchy the faster and smaller
     * If used correctly, provides the _illusion_ of fast & large memory
-    * But read/write performance at different levels may vary by a few
-      orders of magnitude
+    * But read/write performance at different levels may vary by a _few
+      orders of magnitude_
 
 \pause
 
@@ -66,7 +86,6 @@
 ## Caches
 
 * Caches are fast memory used to store _frequently reused_ data
-* They are managed by hardware/OS (so they are fast)
 * _Caching_ is common in both hardware and algorithm design
     * We saw Dynamic Programming makes use of caching
     * Almost all computers today have some form of cache
@@ -83,8 +102,12 @@
     * It has R rows, each row stores K words
     * The width of a word is 8 bytes (double precision)
     * Initially the cache is empty
-    * On miss, we fetch the original address as well as the
-      neighbouring K - 1 words
+
+* A _cache miss_ occurs when you do not have the data for the particular
+  address in the cache
+
+* On miss, we fetch the block containing the requested address
+
 
 ## Cache Example
 
@@ -112,18 +135,25 @@
 
 ## Caches
 
-* reading data from cache is much faster than from memory..
-* .. minimizing the number of cache misses can improve performance
+* Reading data from cache is much faster than from memory
+* Minimizing the number of cache misses is _good_
 
 * Modern CPUs can optimise sequential read/write access
     * Data prefetch on linear access pattern
 
-* As a programmer you don't ever know you have a cache...
+* Caches are managed by hardware/OS (so they are fast)
+
 \pause
+
+* As a programmer you don't ever know you have a cache...
+
+\pause
+
 * ... or do you?
 
 ## Word of Caution
 
+* Before we proceed, a word of caution
 * When optimising applications it is good to have
     * A model of the expected performance improvement
     * A relevant benchmark
@@ -136,8 +166,6 @@
 ## Matrix Multiply
 
 ![](img/loop-interchange.png)
-
-## Matrix Multiply
 
 ## Matrix Multiply
 
@@ -178,20 +206,38 @@ for (int i = 0; i < n; i++)       // i
 
 ![](img/matrix-multiply.png)
 
-## Matrix Multiply
+<!-- ## Matrix Multiply -->
 
-![](img/matrix-multiply.png)
+<!-- ![](img/matrix-multiply.png) -->
+
 
 ## Matrix Multiply -- Small Scale Example
 
+## Matrix Multiply -- L1 Miss Analysis
+
+* Column major version will incur a miss on every reference
+
+TODO Image
+
+## Matrix Multiply -- L1 Miss Analysis
+
+* Unless the matrix is very small, in which case, it should perform
+  just as well as the row major version
+
+TODO Image
+
+
 ## Matrix Multiply -- L1 Cache Model
 
-* The miss rate on the B matrix for Naive version should be N*N
+* The miss rate on the B matrix for naive version should be N*N
 * The miss rate for the loop interchanged version should be N*N/B
 * The cache line length is 64 Bytes --> 8 Double
-* So loop interchange should be roughly 8 times faster?
-* Not quite, this is diminished by:
-* The proportion of time we spend accessing the B matrix
+* So loop interchange should be roughly _8 times faster_?
+* Not quite, this is diminished by the proportion of time we spend
+  accessing the B matrix
+
+## Matrix Multiply -- L1 Cache Model
+
 * We also need to take into account that a penalty for miss
 increases substantially as we descend in the cache hierarchy: a
 L1 cache miss is (around) 10 cycles, a LL cache miss is (around)
@@ -202,17 +248,16 @@ let's just run the thing!
 * We can _reasonably expect_ our interchanged version to be a few
 times faster than the naive version
 
+
 ## Matrix Multiply -- Other Cache Model
 
 * We'll ignore L2 for now
 
 * What about LL cache?
-    * The cache is quite is quite large (3 MB on my machine, could be
-      up to 20 - 40 MB on server class processors)
-    * Our benchmark is rather small (3, 1024 x 1024 double matrices, = 12 MB)
-    * In the LL cache
-    *
-    * We should have _very few misses_
+    * The cache is quite large (3 MB on my machine)
+    * But our benchmark is even larger:
+        * 3, 1024 x 1024, double precision matrices = 12 MB
+    * So what should we expect?
 
 ## Observing Cache Performance
 
@@ -289,8 +334,46 @@ LLd miss rate:           0.3% (          0.4%     +           0.0%  )
 
 * L1 data miss rate is 10 times smaller!!!
 
+## Matrix Multiply - Last Level Miss Rate
+
+* The last level miss rate is incredibly small. Why?
+
+* We only need to cache a small proportion of each matrix
+
+* B * N values = 64 * 1024 B = 64 KB
+   * Too large for L1 (32K)
+   * But small enough for L3 (3MB)
+
+## Performance Improvement
+
+
+* Interchanged is around 10x faster for larger matrices.
+
+\pause
+
+* Could anything else explain the performance improvement?
+
+
+
+# Vectorization
 
 ## Vectorization
+
+* Many current CPUs have hardware support for _vectorization_
+
+* This provides special instructions which perform the same _operation_ on _multiple data inputs_
+
+* Current architectures support 256 bit wide vector instructions
+
+* Can perform 8 single precision floating point instructions simultaneously
+
+## Vectorization
+
+![](img/vectorization.png)
+
+## Vectorization
+* Many current compilers understand this and can optimise your code
+
 
 * What it is
 * What is the support for it
@@ -353,12 +436,15 @@ java -XX:UnlockDiagnosticVMOpotions -XX:+PrintAssembly <program>
 
 ## The Native Code
 
-## The Native Code Naive vs Loop Interchanged
+## The Native Code -- Naive vs Loop Interchanged
 
 * It seems that the JIT compiler
      * knows about vector instructions (_cool_)
      * is able to optimise much better for the interchanged vs direct loop
      * why?
 
+## Summary
 
-## Java Native Interface
+## Resources
+
+## Next Time
