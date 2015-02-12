@@ -34,7 +34,7 @@
 
 \pause
 
-* ... some _good_ compilers do (in _some_ cases)
+* ... some _good_ compilers (gcc, icc) do (in _some_ cases)
 * But what if:
     * Interpreted languages (Python, JavaScript)
     * New languages (bad(_ish_) compilers)
@@ -50,48 +50,65 @@
 * Our sytems are composed of:
     * cheap and slow memory: magnetic tape, disks, ssds, DRAM
     * fast and expensive memory: L1-3 caches, CPU registers
+
+\pause
+
 * These form a _hierarchy_:
     * The higher in the hierarchy the faster and smaller
     * If used correctly, provides the _illusion_ of fast & large memory
     * But read/write performance at different levels may vary by a few
       orders of magnitude
+
+\pause
+
 * It is important to use our memory hierarchy well...
 
 ## Caches
 
 * Caches are fast memory used to store _frequently reused_ data
-* This is handled entirely in hardware and/or by the OS
-* When use effectively they can hide the
-* Caches are fast, but usually quite small
+* They are managed by hardware/OS (so they are fast)
 * _Caching_ is common in both hardware and algorithm design
     * We saw Dynamic Programming makes use of caching
     * Almost all computers today have some form of cache
 
-## Caches
-
 * Generally, caches are organised in rows, each row containing one or
   more words
 
-* In practice, the design of a cache may be quite elaborate. Things to consider:
-    * Replacement policy
-    * Pre-fetching
-    * Associativity
-    * Number of levels
-    * Ensuring cache coherency between multiple processors (on
-      multi-processor systems)
+* In practice, the design of a cache may be quite elaborate:
+    * Replacement policy, Pre-fetching, Associativity, Number of levels etc.
 
 ## Caches -- A Simple Model
 
-* However, we can do well with a simple model of the cache
-    * It has R rows
-    * Each row stores K words
+* We can do well with a simple model of the cache
+    * It has R rows, each row stores K words
     * The width of a word is 8 bytes (double precision)
     * Initially the cache is empty
-    * On a cache miss, we fetch the original address as well as the
+    * On miss, we fetch the original address as well as the
       neighbouring K - 1 words
 
+## Cache Example
+
+![](img/cache1.png)
 
 ## Cache Example
+
+![](img/cache2.png)
+
+## Cache Example
+
+![](img/cache3.png)
+
+## Cache Example
+
+![](img/cache4.png)
+
+## Cache Example
+
+![](img/cache5.png)
+
+## Cache Example
+
+![](img/cache6.png)
 
 ## Caches
 
