@@ -33,6 +33,9 @@
 ## Hardware Over Time
 
 * You might be tempted to think algorithms are king...
+
+\pause
+
 * ... but think about how much hardware has improved over time
 
 ## Transistor Count Over Time
@@ -159,7 +162,7 @@
     * A relevant benchmark
     * Means of _measuring_ the performance improvement
     * Tools to drill down and understand what goes wrong when the
-      _observed_ results do not match the _measured_ results
+      _observed_ results do not match the _expected_ results
 
 * Let's proceed to matrix multiply...
 
@@ -365,26 +368,27 @@ LLd miss rate:           0.3% (          0.4%     +           0.0%  )
 
 * Current architectures support 256 bit wide vector instructions
 
-* Can perform 8 single precision floating point instructions simultaneously
+* Can perform 8 single precision (or 4 double precision) floating point instructions simultaneously
 
-## Vectorization
+* Many current compilers understand this and can optimise your code -- _vectorizing compilers_
+
+
+## Vectorization - Example
 
 ![](img/vectorization.png)
 
-## Vectorization
-* Many current compilers understand this and can optimise your code
-
-
-* What it is
-* What is the support for it
-* What it's good for
 
 ## Wait - does Java know about Vectorization?
 
 * It's worth taking a step back
+
+\pause
+
 * We are coding this in Java
-    * What does Java compile to? _Bytecode_
+    * What does Java compile to? _Bytecode_...
     * _Bytecode_ is supposed to be _architecture_ independent
+    * Will the JVM be able to vectorise the _bytecode_, at runtime?
+    * How can we observe this?
 
 ## A look at the Bytecode
 
