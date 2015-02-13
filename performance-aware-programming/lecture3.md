@@ -38,14 +38,6 @@
 
 * ... but think about how much hardware has improved over time
 
-## Transistor Count Over Time
-
-![](img/moores-law.png)
-
-## Memory CPU Gap
-
-![](img/memory-cpu-gap.png)
-
 ## This Time
 
 * We will look at a few hardware features with high impact on
