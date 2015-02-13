@@ -4,8 +4,8 @@ import java.util.Arrays;
 public class Measuring {
 
     /** Compare loop interchanged versus naive matrix multiply.
-     *
-     * Usage: java Measuring <matrix_size>
+     *  (Slightly revised version from lecture 1 for JDK 7.)
+     * Usage: java Measuring <matrix_size> <algorithm>
      */
     public static void main(String[] args) {
         if (args.length != 2) {
@@ -27,7 +27,7 @@ public class Measuring {
         else 
             System.out.println("Unknown option " + algorithm);
         long end = System.currentTimeMillis();
-        System.out.printlnt("Took " + (end - start) + "ms");
+        System.out.println("Took " + (end - start) + "ms");
     }
 }
 
