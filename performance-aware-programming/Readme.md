@@ -1,17 +1,33 @@
 This is a set of four introductory lectures on Performance Aware
-Programming. 
+Programming.
 
 
-#### Lecture 1 - Measuring 
- Defines performance and looks at how we can measure it in our programs using various Linux builtins and Java method calls. The [accompanying example](src/lecture1) shows the impact of the loop interchange optimisation on the performance of matrix multiplication. A script is provided to run the experiment for varying input sizes and plot the results.
+#### Lecture 1 - Measuring
+
+ Defines performance and looks at how we can measure it in our
+ programs using various Linux builtins and Java method calls. The
+ [accompanying example](src/lecture1) shows the impact of the loop
+ interchange optimisation on the performance of matrix
+ multiplication. A script is provided to run the experiment for
+ varying input sizes and plot the results.
+
+####Lecture 2 -- Algorithms
+
+We look at the Discrete Knapsack problem and we show just how large
+the performance impact of clever algorithms can be: we start by
+developing a Complete Search version and then optimise this to cache
+re-ocurring subproblems (cf. Dynamic Programming) to great effect.
+
+#### Lecture 3 -- Hardware
+
+We analyse the impact of the underlying hardware on the performance of
+our programs. In particular we investigate how understanding the cache
+hierarchy and CPU architecture can help us write code which is more
+easily optimised by the JVM.
 
 ### In Progress
 These lectures are in progress and will be uploaded after they have been presented.
 
-*  __Lecture 2 -- Algorithms__ -- the impact of smart programs on performance
-   implemented
-* __Lecture 3 -- Hardware__ -- the impact of the underlying hardware on the
-   performance of our programs
 * __Lecture 4 -- Tools__ -- how to get the most of our tools when programming
 
 Compiling the slides requires pandoc >= 1.12. Example:
