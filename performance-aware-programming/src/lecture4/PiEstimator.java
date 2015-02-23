@@ -11,9 +11,9 @@ import java.util.concurrent.Future;
  *  It counts how many of the points are also inside the circle with
  *  center (0.5, 0.5) of radius 0.5.
  *
- *  We then use the fact the probability of picking a point pointInCircle the
- *  circle is equal to the ratio of the areas of the circle and square
- *  to approximate the value of Pi.
+ *  To approximate the value of Pi, we then use the fact that the
+ *  probability of picking a point in the circle is equal to the ratio
+ *  of the areas of the circle and square .
  */
 public class PiEstimator implements  Runnable {
 
